@@ -1,21 +1,31 @@
 import React from 'react'
-import Chart from "../chart/Chart";
+import Chart from "./chart/Chart";
 import styled from 'styled-components';
+import Banner from "./Banner";
+import Card from "./Card";
 
 const ContentWrapper = styled.div`
-  padding: 20px;
-
-  @media (min-width: 1191px) {
-    max-width: 90%;
-  }
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 60%;
+    margin: 0 auto;
 `;
+
 function Content() {
     return (
-    <ContentWrapper>
-        <Chart />
-    </ContentWrapper>
-    );
+        <ContentWrapper>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+            </div>
+            <Card>
 
+            </Card>
+
+        </ContentWrapper>
+    );
 }
+
 
 export default Content;

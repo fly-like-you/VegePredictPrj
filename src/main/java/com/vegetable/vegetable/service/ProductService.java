@@ -17,6 +17,11 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+
+    public List<Product> getProductsByName(String name) {
+        return productRepository.findByName(name);
+    }
+
     public Product getProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         return optionalProduct.orElse(null);

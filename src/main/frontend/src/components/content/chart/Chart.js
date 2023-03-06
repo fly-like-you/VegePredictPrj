@@ -3,19 +3,21 @@ import axios from "axios";
 import ChartComponent from "./ChartComponent";
 
 import styled from 'styled-components';
+import Card from "../Card";
 
 const ChartWrapper = styled.div`
-  width: 100%;
-  height: 400px;
+  width: 600px;
+  height: 700px;
 `;
 
-function Chart() {
+function Chart({ veggie }) {
     const [data, setData] = useState(null);
     useEffect(() => {
-        axios.get('/api/products')
+        axios.get(`/api/products?name=${veggie}`)
             .then(response => setData(response.data))
             .catch(error => console.log(error));
-    }, []);
+    }, [veggie]);
+    console.log(data)
 
     if (!data) {
         return <div>Loading...</div>;

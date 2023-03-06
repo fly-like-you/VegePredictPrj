@@ -14,20 +14,6 @@ function getChartColor(vegetable) {
     }
 }
 
-function getChartData(data) {
-    const chartData = {};
-
-    // 모든 데이터를 순회하며 각 농산물의 가격 변동 내역을 chartData에 추가
-    data.forEach(product => {
-        const { name, price, date } = product;
-        if (!chartData[name]) {
-            chartData[name] = { label: name, data: [], fill: false, borderColor: getChartColor(name), borderWidth: 2 };
-        }
-        chartData[name].data.push({ x: date, y: price });
-    });
-
-    return chartData;
-}
 
 function getChartOptions() {
     return {
