@@ -15,6 +15,5 @@ public class VegetableApplication {
 		MainService mainService = context.getBean(MainService.class);
 		mainService.init();
 	}
-	//sdas
 
 }

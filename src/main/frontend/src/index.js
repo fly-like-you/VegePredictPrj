@@ -24,7 +24,7 @@ import ContentWrapper from "./components/wrapper/ContentWrapper";
 ReactDOM.render(
     <React.StrictMode>
         <div id="wrapper">
-            <Sidebar></Sidebar>
+            {/*<Sidebar></Sidebar>*/}
             <ContentWrapper>
 
             </ContentWrapper>
