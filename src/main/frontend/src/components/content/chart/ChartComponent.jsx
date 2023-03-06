@@ -9,6 +9,8 @@ function getChartColor(vegetable) {
             return 'red';
         case 'cucumber':
             return 'green';
+        case 'red pepper':
+            return 'red';
         default:
             return 'black';
     }

@@ -1,29 +1,26 @@
 import React from 'react'
-import Chart from "./chart/Chart";
 import styled from 'styled-components';
-import Banner from "./Banner";
-import Card from "./Card";
+import Card from "./card/Card";
+import PercentageTagCard from "./card/PercentageTagCard";
 
 const ContentWrapper = styled.div`
+    border: 1px solid black;
     flex-direction: column;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid black;
-    width: 60%;
+    width: 70%;
     margin: 0 auto;
 `;
 
 function Content() {
     return (
         <ContentWrapper>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-            </div>
-            <Card>
+            <Card veggie={'red pepper'}/>
 
-            </Card>
-
+            <Card veggie={'cucumber'}/>
         </ContentWrapper>
+
     );
 }
 
