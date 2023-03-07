@@ -5,6 +5,7 @@ import TopBar from "../topbar/TopBar";
 import Banner from "../content/Banner";
 import PercentageTagCard from "../content/card/PercentageTagCard";
 import styled from "styled-components";
+import MoneyTagCard from "../content/card/MoneyTagCard";
 
 
 
@@ -22,8 +23,10 @@ function ContentWrapper() {
 
             <marquee behavior="scroll" direction="right" scrollamount="5">
                 <TagCardSlider>
+                    <PercentageTagCard percentage={60}></PercentageTagCard>
                     <PercentageTagCard percentage={50}></PercentageTagCard>
-                    <PercentageTagCard percentage={50}></PercentageTagCard>
+                    <PercentageTagCard percentage={40}></PercentageTagCard>
+                    <MoneyTagCard></MoneyTagCard>
                 </TagCardSlider>
 
             </marquee>

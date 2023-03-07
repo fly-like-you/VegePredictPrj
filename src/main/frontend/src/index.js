@@ -12,9 +12,7 @@ import ContentWrapper from "./components/wrapper/ContentWrapper";
 ReactDOM.render(
     <React.StrictMode>
         <div id="wrapper">
-            {/*<Sidebar></Sidebar>*/}
             <ContentWrapper>
-
             </ContentWrapper>
         </div>
         <ScrollButton></ScrollButton>

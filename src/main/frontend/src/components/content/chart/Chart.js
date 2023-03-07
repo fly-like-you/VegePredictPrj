@@ -2,13 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ChartComponent from "./ChartComponent";
 
-import styled from 'styled-components';
-import Card from "../card/Card";
-
-const ChartWrapper = styled.div`
-  width: 600px;
-  height: 100%;
-`;
 
 function Chart({ veggie }) {
     const [data, setData] = useState(null);
@@ -32,12 +25,7 @@ function Chart({ veggie }) {
     });
 
     return (
-        <div>
-
-            <ChartWrapper>
-                <ChartComponent key={veggie} data={chartData[veggie]} title={veggie}/>
-            </ChartWrapper>
-        </div>
+        <ChartComponent key={veggie} data={chartData[veggie]} title={veggie}/>
     );
 }
 

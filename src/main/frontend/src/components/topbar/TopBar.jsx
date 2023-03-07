@@ -8,6 +8,7 @@ const NavWrapper = styled.div`
   align-items: center;
   width: 70%;
   margin: 0 auto;
+  
 `;
 
 function TopBar() {
@@ -22,12 +23,11 @@ function TopBar() {
     return (
         <Navbar style={gradientStyle} variant="dark" expand="lg">
             <NavWrapper>
-                <Navbar.Brand style={navStyle} href="#">React Bootstrap Navbar</Navbar.Brand>
+                <Navbar.Brand style={navStyle} href="#">농산물 가격예측 시스템</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
-                        <Nav.Link href="#">Link</Nav.Link>
-                        <Nav.Link href="#">Link</Nav.Link>
+                        <Nav.Link href="#">더보기</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </NavWrapper>

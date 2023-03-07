@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
+import styled from 'styled-components';
+
+const StyledCanvas = styled.canvas`
+  width: 100%;
+  height: 100%;
+`;
 
 function getChartColor(vegetable) {
     switch (vegetable) {
@@ -91,7 +97,7 @@ function ChartComponent(props) {
         };
     }, [props.data, props.title]);
 
-    return <canvas ref={chartRef} />;
+    return <StyledCanvas ref={chartRef} />;
 }
 
 
