@@ -1,18 +1,16 @@
-// src/main/frontend/src/App.js
-// React의 주요 로직을 구현
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap';
-import Sidebar from './components/sidebar/Sidebar'
+import React from 'react'
+import {Routes, Route} from "react-router-dom";
+import Home from "./pages/Home";
+import Vegetable from "./pages/Vegetable";
+
 
 function App() {
-
-    return (
-        <Sidebar />
-    )
-
-
+    return(
+        <Routes>
+            <Route path={"/"} element={<Home/>}/>
+            <Route path={"/vegetables/:vegetable"} element={<Vegetable></Vegetable>}/>
+        </Routes>
+    );
 }
 
 export default App;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import FadeInText from "./FadeInText";
 
 const BannerImage = styled.img`
   width: 100%;
@@ -17,7 +18,7 @@ const BannerWrapper = styled.div`
 
 const BannerText = styled.h1`
   position: absolute;
-  top: 50%;
+  bottom: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
@@ -27,7 +28,10 @@ function Banner({ imageSrc, title }) {
     return (
         <BannerWrapper>
             <BannerImage src={imageSrc} alt={title} />
-            <BannerText>{title}</BannerText>
+
+            <BannerText>
+                <FadeInText text={title}></FadeInText>
+            </BannerText>
         </BannerWrapper>
     );
 }

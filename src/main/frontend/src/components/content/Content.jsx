@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import Card from "./card/Card";
+import GraphCard from "./card/GraphCard";
 import PercentageTagCard from "./card/PercentageTagCard";
 
 const ContentWrapper = styled.div`
@@ -34,15 +34,15 @@ function Content() {
                 <h2>가격 예측 그래프</h2>
             </SectionWrapper>
             <CardWrapper>
-                <Card veggie={"red pepper"}  />
-                <Card veggie={"cucumber"}  />
+                <GraphCard veggie={"red pepper"}  />
+                <GraphCard veggie={"cucumber"}  />
             </CardWrapper>
             <SectionWrapper>
                 <h2>세부사항</h2>
             </SectionWrapper>
             <CardWrapper>
-                <Card veggie={"red pepper"}  />
-                <Card veggie={"cucumber"}  />
+                <GraphCard veggie={"red pepper"}  />
+                <GraphCard veggie={"cucumber"}  />
             </CardWrapper>
         </ContentWrapper>
     );

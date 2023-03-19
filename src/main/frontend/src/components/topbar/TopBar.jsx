@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navbar, Nav } from 'react-bootstrap';
 import styled from "styled-components";
+import {BrowserRouter as Router, Switch, Route, Link, BrowserRouter} from 'react-router-dom';
 
 const NavWrapper = styled.div`
   display: flex;
@@ -23,7 +24,7 @@ function TopBar() {
     return (
         <Navbar style={gradientStyle} variant="dark" expand="lg">
             <NavWrapper>
-                <Navbar.Brand style={navStyle} href="#">농산물 가격예측 시스템</Navbar.Brand>
+                <Navbar.Brand style={navStyle} href="/">농산물 가격예측 시스템</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
