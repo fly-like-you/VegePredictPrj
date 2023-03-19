@@ -17,15 +17,19 @@ const ContentWrapper = styled.div`
 
 `;
 
-const StyledCard = styled(Card)`
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
+
 const CardWrapper = styled.div`
-  position: absolute;
-  bottom: -50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 1080px;
+    position: absolute;
+    top: 300px;
+
 `;
+
 
 function Home() {
     return(
@@ -42,9 +46,32 @@ function Home() {
                         info="More info here."
                         lastUpdated="3 mins ago"
                     />
-                </CardWrapper>
+                    <Card
+                        imgSrc="/images/red-pepper.jpg"
+                        title="Card Title"
+                        text="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        info="More info here."
+                        lastUpdated="3 mins ago"
+                    />
+                    <Card
+                        imgSrc="/images/red-pepper.jpg"
+                        title="Card Title"
+                        text="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        info="More info here."
+                        lastUpdated="3 mins ago"
+                    />
+                    <Card
+                        imgSrc="/images/red-pepper.jpg"
+                        title="Card Title"
+                        text="Some quick example text to build on the card title and make up the bulk of the card's content."
+                        info="More info here."
+                        lastUpdated="3 mins ago"
+                    />
 
+
+                </CardWrapper>
             </ContentWrapper>
+
             <Footer></Footer>
 
         </div>

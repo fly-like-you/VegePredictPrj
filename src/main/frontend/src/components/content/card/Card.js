@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CardWrapper = styled.div`
-  width: 640px;
-  height: 380px;
+  height: 250px;
+  width: 400px;
   background-color: #000;
   border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 30px 30px 30px 30px;
+    
+
 
 `;
 
@@ -26,12 +29,13 @@ const Image = styled.img`
   height: 100%;
   object-fit: cover;
   object-position: center;
+  
 
 `;
 
 const TextWrapper = styled.div`
+  margin: 10px 10px 10px 10px;
   flex: 1;
-  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
