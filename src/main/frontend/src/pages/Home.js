@@ -37,7 +37,8 @@ function Home() {
             <TopBar></TopBar>
 
             <ContentWrapper>
-                <Banner imageSrc="/images/banner.jpg" title="banner"/>
+                <Banner imageSrc="/images/banner.jpg" title="농산물 가격예측"/>
+
                 <CardWrapper>
                     <Card
                         imgSrc="/images/red-pepper.jpg"
@@ -53,21 +54,6 @@ function Home() {
                         info="More info here."
                         lastUpdated="3 mins ago"
                     />
-                    <Card
-                        imgSrc="/images/red-pepper.jpg"
-                        title="Card Title"
-                        text="Some quick example text to build on the card title and make up the bulk of the card's content."
-                        info="More info here."
-                        lastUpdated="3 mins ago"
-                    />
-                    <Card
-                        imgSrc="/images/red-pepper.jpg"
-                        title="Card Title"
-                        text="Some quick example text to build on the card title and make up the bulk of the card's content."
-                        info="More info here."
-                        lastUpdated="3 mins ago"
-                    />
-
 
                 </CardWrapper>
             </ContentWrapper>
