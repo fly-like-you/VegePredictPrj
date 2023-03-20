@@ -27,22 +27,20 @@ const CardWrapper = styled.div`
   height: 450px;
 `;
 
-function Content() {
+function Content({ vegetable }) {
     return (
         <ContentWrapper>
             <SectionWrapper>
                 <h2>가격 예측 그래프</h2>
             </SectionWrapper>
             <CardWrapper>
-                <GraphCard veggie={"red pepper"}  />
-                <GraphCard veggie={"cucumber"}  />
+                <GraphCard veggie={vegetable}  />
             </CardWrapper>
             <SectionWrapper>
                 <h2>세부사항</h2>
             </SectionWrapper>
             <CardWrapper>
-                <GraphCard veggie={"red pepper"}  />
-                <GraphCard veggie={"cucumber"}  />
+                <GraphCard veggie={vegetable}  />
             </CardWrapper>
         </ContentWrapper>
     );

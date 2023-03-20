@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const CardWrapper = styled.div`
   height: 250px;
   width: 400px;
-  background-color: #000;
+  background-color: #aaaaaa;
   border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     margin: 30px 30px 30px 30px;
@@ -34,12 +34,10 @@ const Image = styled.img`
 `;
 
 const TextWrapper = styled.div`
-  margin: 10px 10px 10px 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  opacity: inherit
 
 `;
 
@@ -67,7 +65,6 @@ function Card(props) {
                     <Title>{title}</Title>
                     <p>{text}</p>
                     <Info>{info}</Info>
-                    <p><small>Last updated {lastUpdated}</small></p>
                 </TextWrapper>
             </div>
         </CardWrapper>

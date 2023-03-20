@@ -15,22 +15,22 @@ const TagCardSlider = styled.div`
   align-items: center;
   justify-content: flex-start;
 `;
-function Vegetable() {
+function Vegetable( { vegetable }) {
+    console.log(vegetable)
     return(
         <div id="content-wrapper" className="d-flex flex-column">
             <TopBar></TopBar>
-            <Banner imageSrc="/images/red-pepper.jpg" title="Red Pepper" />
+            <Banner imageSrc={`/images/${vegetable}.jpg`} title={vegetable} />
 
             <marquee behavior="scroll" direction="right" scrollamount="5">
                 <TagCardSlider>
-                    <PercentageTagCard percentage={60}></PercentageTagCard>
                     <PercentageTagCard percentage={50}></PercentageTagCard>
                     <PercentageTagCard percentage={40}></PercentageTagCard>
                     <MoneyTagCard></MoneyTagCard>
                 </TagCardSlider>
 
             </marquee>
-            <Content></Content>
+            <Content vegetable={vegetable}></Content>
             <Footer></Footer>
         </div>
 
