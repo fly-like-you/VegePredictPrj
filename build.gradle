@@ -34,6 +34,7 @@ dependencies {
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
+	testImplementation 'org.mockito:mockito-core:3.12.4'
 }
 
 tasks.named('test') {

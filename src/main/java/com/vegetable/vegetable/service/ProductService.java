@@ -35,6 +35,9 @@ public class ProductService {
         List<Product> products = new ArrayList<>();
 
         // 당근 데이터
+        products.add(new Product("RedPepper", 14141, LocalDate.of(2023,3,21)));
+        products.add(new Product("RedPepper", 14000, LocalDate.of(2023,3,20)));
+
         products.add(new Product("RedPepper", 14750, LocalDate.of(2022,2,27)));
         products.add(new Product("RedPepper", 13150, LocalDate.of(2022,2,28)));
         products.add(new Product("RedPepper", 12549, LocalDate.of(2022,3,1)));
@@ -43,11 +46,16 @@ public class ProductService {
         products.add(new Product("RedPepper", 14141, LocalDate.of(2022,3,4)));
 
         // 무 데이터
+        products.add(new Product("Radish", 1500, LocalDate.of(2023,3,21)));
+        products.add(new Product("Radish", 1500, LocalDate.of(2023,3,20)));
+
         products.add(new Product("Radish", 500, LocalDate.of(2022,1,2)));
         products.add(new Product("Radish", 750, LocalDate.of(2022,1,3)));
         products.add(new Product("Radish", 1000, LocalDate.of(2022,1,4)));
 
         // 오이 데이터
+        products.add(new Product("Cucumber", 3000, LocalDate.of(2023,3,21)));
+        products.add(new Product("Cucumber", 3000, LocalDate.of(2023,3,20)));
         products.add(new Product("Cucumber", 3000, LocalDate.of(2022,1,2)));
         products.add(new Product("Cucumber", 3500, LocalDate.of(2022,1,3)));
         products.add(new Product("Cucumber", 4000, LocalDate.of(2022,1,4)));
