@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VegetableCardService {
@@ -31,9 +32,11 @@ public class VegetableCardService {
 
         double pricePercentage = calculatePricePercentage(productToday.getPrice(), productYesterday.getPrice());
 
-        PredictProduct predictProduct = predictProductRepository.findByProductName(productToday.getName());
-        boolean isHigherThanToday = predictProduct != null ? predictProduct.getIsHigherThanToday() : false;
-
+        Optional<PredictProduct> predictProduct = predictProductRepository.findByProductNameAndProductDate(vegetableName, today);
+        Optional<Product> product = productRepository.findByNameAndDate(vegetableName, today);
+        int todayPrice = product.orElse(new Product()).getPrice();
+        int predictPrice = predictProduct.orElse(new PredictProduct()).getDay1Price();
+        boolean isHigherThanToday = predictPrice >= todayPrice;
 
         return new VegetableCard(vegetableName, pricePercentage, isHigherThanToday);
     }

@@ -1,50 +1,45 @@
 package com.vegetable.vegetable.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Entity
-@Table(name = "predict_product")
+@Table(name = "PredictProduct")
+@Getter @Setter
 public class PredictProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_name")
-    private String productName;
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "name", referencedColumnName = "name"),
+            @JoinColumn(name = "date", referencedColumnName = "date")
+    })
+    private Product product;
 
-    @Column(name = "is_higher_than_today")
-    private boolean isHigherThanToday;
+    @Column(name = "day1_price")
+    private Integer day1Price;
 
-    @ElementCollection
-    @CollectionTable(name = "product_predictions")
-    @Column(name = "prediction")
-    private List<Double> predictions = new ArrayList<>(Collections.nCopies(7, 0.0));
+    @Column(name = "day2_price")
+    private Integer day2Price;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "day3_price")
+    private Integer day3Price;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "day4_price")
+    private Integer day4Price;
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
+    @Column(name = "day5_price")
+    private Integer day5Price;
 
-    public String getProductName() {
-        return this.getProductName();
-    }
+    @Column(name = "day6_price")
+    private Integer day6Price;
 
-    public boolean getIsHigherThanToday() {
-        return isHigherThanToday;
-    }
+    @Column(name = "day7_price")
+    private Integer day7Price;
 
-    public void setIsHigherThanToday(boolean isHigherThanToday) {
-        this.isHigherThanToday = isHigherThanToday;
-    }
+    // getters and setters
 }

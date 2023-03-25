@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ProductService {
@@ -34,32 +35,29 @@ public class ProductService {
     public void addSampleData() {
         List<Product> products = new ArrayList<>();
 
-        // 당근 데이터
-        products.add(new Product("RedPepper", 14141, LocalDate.of(2023,3,21)));
-        products.add(new Product("RedPepper", 14000, LocalDate.of(2023,3,20)));
+        // 채소 종류
+        String[] vegetableNames = {"RedPepper", "Radish", "Cucumber"};
 
-        products.add(new Product("RedPepper", 14750, LocalDate.of(2022,2,27)));
-        products.add(new Product("RedPepper", 13150, LocalDate.of(2022,2,28)));
-        products.add(new Product("RedPepper", 12549, LocalDate.of(2022,3,1)));
-        products.add(new Product("RedPepper", 14472, LocalDate.of(2022,3,2)));
-        products.add(new Product("RedPepper", 17095, LocalDate.of(2022,3,3)));
-        products.add(new Product("RedPepper", 14141, LocalDate.of(2022,3,4)));
+        // 3월 1일부터 3월 31일까지의 날짜 생성
+        LocalDate startDate = LocalDate.of(2023, 3, 1);
+        LocalDate endDate = LocalDate.of(2023, 3, 31);
+        List<LocalDate> dates = new ArrayList<>();
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            dates.add(date);
+        }
 
-        // 무 데이터
-        products.add(new Product("Radish", 1500, LocalDate.of(2023,3,21)));
-        products.add(new Product("Radish", 1500, LocalDate.of(2023,3,20)));
+        // 가격 랜덤 생성
+        Random random = new Random();
 
-        products.add(new Product("Radish", 500, LocalDate.of(2022,1,2)));
-        products.add(new Product("Radish", 750, LocalDate.of(2022,1,3)));
-        products.add(new Product("Radish", 1000, LocalDate.of(2022,1,4)));
-
-        // 오이 데이터
-        products.add(new Product("Cucumber", 3000, LocalDate.of(2023,3,21)));
-        products.add(new Product("Cucumber", 3000, LocalDate.of(2023,3,20)));
-        products.add(new Product("Cucumber", 3000, LocalDate.of(2022,1,2)));
-        products.add(new Product("Cucumber", 3500, LocalDate.of(2022,1,3)));
-        products.add(new Product("Cucumber", 4000, LocalDate.of(2022,1,4)));
-
+        // 샘플 데이터 생성
+        for (String vegetableName : vegetableNames) {
+            for (LocalDate date : dates) {
+                int price = random.nextInt(10001) + 10000; // 10000원에서 20000원 사이의 가격 랜덤 생성
+                products.add(new Product(vegetableName, price, date));
+            }
+        }
+        // 샘플 데이터 저장
         productRepository.saveAll(products);
     }
+
 }

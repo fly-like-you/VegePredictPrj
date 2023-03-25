@@ -40,6 +40,7 @@ function Home() {
             .then((response) => response.json())
             .then((data) => setVegetableCards(data));
     }, []);
+    console.log(vegetableCards)
 
     return(
         <div>
@@ -56,9 +57,11 @@ function Home() {
                             imgSrc={`/images/${card.vegetableName}.jpg`}
                             title={card.vegetableName}
                             text={
-                                card.pricePercentage < 0
-                                    ? `전날과 대비하여 ${Math.abs(card.pricePercentage).toFixed(2)}% 하락했습니다.`
-                                    : `전날과 대비하여 ${card.pricePercentage.toFixed(2)}% 상승하였습니다.`
+                                card.pricePercentage && !isNaN(card.pricePercentage)
+                                    ? card.pricePercentage < 0
+                                        ? `전날과 대비하여 ${Math.abs(card.pricePercentage).toFixed(2)}% 하락했습니다.`
+                                        : `전날과 대비하여 ${card.pricePercentage.toFixed(2)}% 상승하였습니다.`
+                                    : `전날과 대비하여 변동이 없습니다.`
                             }
                             info={`내일 예측: ${card.isHigherThanToday ? '높음' : '낮음'}`}
                         />
