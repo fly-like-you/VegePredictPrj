@@ -32,8 +32,7 @@ public class PredictProductService {
         String[] vegetableNames = {"RedPepper", "Radish", "Cucumber"};
 
         // 2023년 4월 1일부터 2023년 4월 7일까지의 날짜 생성
-        LocalDate startDate = LocalDate.of(2023, 3, 25);
-
+        LocalDate startDate = LocalDate.now();
 
         // 가격 랜덤 생성
         Random random = new Random();
