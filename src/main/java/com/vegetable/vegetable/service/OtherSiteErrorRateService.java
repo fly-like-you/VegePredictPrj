@@ -2,6 +2,7 @@ package com.vegetable.vegetable.service;
 
 import com.vegetable.vegetable.entity.ErrorRate;
 import com.vegetable.vegetable.entity.OtherSiteErrorRate;
+import com.vegetable.vegetable.repository.ErrorRateRepository;
 import com.vegetable.vegetable.repository.OtherSiteErrorRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,20 @@ import java.util.Random;
 
 @Service
 public class OtherSiteErrorRateService {
+    final private OtherSiteErrorRateRepository otherSiteErrorRateRepository;
+
     @Autowired
-    private OtherSiteErrorRateRepository otherSiteErrorRateRepository;
+    public OtherSiteErrorRateService(OtherSiteErrorRateRepository otherSiteErrorRateRepository) {
+        this.otherSiteErrorRateRepository = otherSiteErrorRateRepository;
+    }
+
+    public List<OtherSiteErrorRate> getOtherSiteErrorRatesByName(String name) {
+        return otherSiteErrorRateRepository.findByName(name);
+    }
+
+    public List<OtherSiteErrorRate> getAllErrorRates() {
+        return otherSiteErrorRateRepository.findAll();
+    }
 
     // 기타 필요한 메소드들
     public void createSampleErrorRates() {

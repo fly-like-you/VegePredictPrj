@@ -1,13 +1,9 @@
 package com.vegetable.vegetable.service;
 
 import com.vegetable.vegetable.entity.ErrorRate;
-import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.ErrorRateRepository;
-import com.vegetable.vegetable.repository.PredictProductRepository;
-import com.vegetable.vegetable.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;

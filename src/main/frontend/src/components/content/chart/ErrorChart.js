@@ -73,13 +73,21 @@ const ErrorChart = ({ data }) => {
 
 
 
-const ErrorChartContainer = ( {vegetable} ) => {
+const ErrorChartContainer = ({ vegetable, otherSiteFlag }) => {
     const [data, setData] = useState(null);
+    const chartTitle = otherSiteFlag
+        ? "일자별 오차율 그래프"
+        : "모델링 사이트 오차율 그래프(비교군)";
     useEffect(() => {
-        axios.get(`/api/error-rate/name/${vegetable}`)
+        const apiUrl = otherSiteFlag
+            ? `/api/error-rate/other/name/${vegetable}`
+            : `/api/error-rate/name/${vegetable}`;
+
+
+        axios.get(apiUrl)
             .then(response => setData(response.data))
             .catch(error => console.log(error));
-    }, [vegetable]);
+    }, [vegetable, otherSiteFlag]);
 
     if (!data) {
         return <div>Loading...</div>;
@@ -88,7 +96,7 @@ const ErrorChartContainer = ( {vegetable} ) => {
     return (
         <CardWrapper className="card shadow mb-4">
             <div className="card-header py-3">
-                <h6 className="m-0 font-weight-bold text-primary">{vegetable} 일간 가격 변화 그래프</h6>
+                <h6 className="m-0 font-weight-bold text-primary">{vegetable} {chartTitle}</h6>
             </div>
             <div className="card-body">
                 {data.length > 0 ? (

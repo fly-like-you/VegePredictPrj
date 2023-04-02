@@ -42,12 +42,13 @@ function Content({ vegetable }) {
             <SectionWrapper>
                 <h2>세부사항</h2>
             </SectionWrapper>
+
             <CardWrapper>
-                <GraphCard veggie={vegetable}  />
+                <ErrorChartContainer vegetable={vegetable} otherSiteFlag={1}></ErrorChartContainer>
+                <ErrorChartContainer vegetable={vegetable} otherSiteFlag={0}></ErrorChartContainer>
+
             </CardWrapper>
-            <CardWrapper>
-                <ErrorChartContainer vegetable={vegetable}></ErrorChartContainer>
-            </CardWrapper>
+
         </ContentWrapper>
     );
 }

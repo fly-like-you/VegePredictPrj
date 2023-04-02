@@ -1,10 +1,8 @@
 package com.vegetable.vegetable.controller;
-
-
 import com.vegetable.vegetable.entity.ErrorRate;
-import com.vegetable.vegetable.entity.Product;
+import com.vegetable.vegetable.entity.OtherSiteErrorRate;
 import com.vegetable.vegetable.service.ErrorRateService;
-import com.vegetable.vegetable.service.ProductService;
+import com.vegetable.vegetable.service.OtherSiteErrorRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +17,11 @@ import java.util.List;
 @RequestMapping("/api/error-rate")
 public class ErrorRateController {
     private final ErrorRateService errorRateService;
+    private final OtherSiteErrorRateService otherSiteErrorRateService;
     @Autowired
-    public ErrorRateController(ErrorRateService errorRateService) {
+    public ErrorRateController(ErrorRateService errorRateService, OtherSiteErrorRateService otherSiteErrorRateService) {
         this.errorRateService = errorRateService;
+        this.otherSiteErrorRateService = otherSiteErrorRateService;
     }
 
     @GetMapping("/name/{name}")
@@ -31,6 +31,15 @@ public class ErrorRateController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(errorRates);
+    }
+
+    @GetMapping("other/name/{name}")
+    public ResponseEntity<List<OtherSiteErrorRate>> getOtherErrorRateByName(@PathVariable String name) {
+        List<OtherSiteErrorRate> otherSiteErrorRate = otherSiteErrorRateService.getOtherSiteErrorRatesByName(name);
+        if (otherSiteErrorRate.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(otherSiteErrorRate);
     }
 
     @GetMapping
