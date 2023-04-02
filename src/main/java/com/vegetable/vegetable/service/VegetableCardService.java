@@ -38,7 +38,7 @@ public class VegetableCardService {
         int predictPrice = predictProduct.orElse(new PredictProduct()).getDay1Price();
         boolean isHigherThanToday = predictPrice >= todayPrice;
 
-        return new VegetableCard(vegetableName, pricePercentage, isHigherThanToday);
+        return new VegetableCard(vegetableName, pricePercentage, isHigherThanToday, todayPrice);
     }
 
     private double calculatePricePercentage(int todayPrice, int yesterdayPrice) {
@@ -55,6 +55,9 @@ public class VegetableCardService {
         }
 
         return vegetableCards;
+    }
+    public Optional<VegetableCard> getVegetableCardByName(String name) {
+        return Optional.ofNullable(createVegetableCard(name));
     }
 
 }

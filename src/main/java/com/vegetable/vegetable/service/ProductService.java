@@ -39,8 +39,9 @@ public class ProductService {
         String[] vegetableNames = {"RedPepper", "Radish", "Cucumber"};
 
         // 3월 1일부터 3월 31일까지의 날짜 생성
-        LocalDate startDate = LocalDate.of(2023, 3, 1);
-        LocalDate endDate = LocalDate.of(2023, 3, 31);
+        LocalDate startDate = LocalDate.of(2023, 3, 15);
+        LocalDate endDate = LocalDate.now().minusDays(1);
+
         List<LocalDate> dates = new ArrayList<>();
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             dates.add(date);
@@ -58,6 +59,8 @@ public class ProductService {
         }
         // 샘플 데이터 저장
         productRepository.saveAll(products);
+        productRepository.flush();
+
     }
 
 }

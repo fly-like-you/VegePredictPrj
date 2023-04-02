@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
 import GraphCard from "./card/GraphCard";
-import PercentageTagCard from "./card/PercentageTagCard";
+import ErrorChart from "./chart/ErrorChart";
+import ErrorChartContainer from "./chart/ErrorChart";
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -27,6 +28,8 @@ const CardWrapper = styled.div`
   height: 450px;
 `;
 
+
+
 function Content({ vegetable }) {
     return (
         <ContentWrapper>
@@ -41,6 +44,9 @@ function Content({ vegetable }) {
             </SectionWrapper>
             <CardWrapper>
                 <GraphCard veggie={vegetable}  />
+            </CardWrapper>
+            <CardWrapper>
+                <ErrorChartContainer vegetable={vegetable}></ErrorChartContainer>
             </CardWrapper>
         </ContentWrapper>
     );

@@ -1,6 +1,7 @@
 package com.vegetable.vegetable.service;
 
 import com.vegetable.vegetable.entity.ErrorRate;
+import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.ErrorRateRepository;
 import com.vegetable.vegetable.repository.PredictProductRepository;
 import com.vegetable.vegetable.repository.ProductRepository;
@@ -14,8 +15,20 @@ import java.util.Random;
 
 @Service
 public class ErrorRateService {
+    private final ErrorRateRepository errorRateRepository;
     @Autowired
-    private ErrorRateRepository errorRateRepository;
+    public ErrorRateService(ErrorRateRepository errorRateRepository) {
+        this.errorRateRepository = errorRateRepository;
+    }
+
+    public List<ErrorRate> getErrorRatesByName(String name) {
+        return errorRateRepository.findByName(name);
+    }
+
+    public List<ErrorRate> getAllErrorRates() {
+        return errorRateRepository.findAll();
+    }
+
 
     // 기타 필요한 메소드들
     public void createSampleErrorRates() {

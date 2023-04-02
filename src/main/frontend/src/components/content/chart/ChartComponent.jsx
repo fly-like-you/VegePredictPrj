@@ -11,11 +11,11 @@ function getChartColor(vegetable) {
     switch (vegetable) {
         case 'carrot':
             return 'orange';
-        case 'radish':
-            return 'red';
-        case 'cucumber':
+        case 'Radish':
             return 'green';
-        case 'red pepper':
+        case 'Cucumber':
+            return 'green';
+        case 'RedPepper':
             return 'red';
         default:
             return 'black';
@@ -73,7 +73,6 @@ function ChartComponent(props) {
             }
             chartData[props.title].push({ x: date, y: price });
         });
-        console.log(chartData[props.title])
         // 차트 데이터와 옵션을 설정합니다.
         const myChart = new Chart(chartRef.current, {
             type: "line",

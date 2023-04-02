@@ -76,6 +76,7 @@ public class PredictProductService {
 
         // 샘플 데이터 저장
         predictProductRepository.saveAll(predictProducts);
+        predictProductRepository.flush();
     }
 
 }

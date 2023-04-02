@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Footer from "../components/content/footer/Footer";
 import Content from "../components/content/Content";
 import TopBar from "../components/topbar/TopBar";
@@ -6,6 +6,8 @@ import Banner from "../components/content/Banner";
 import PercentageTagCard from "../components/content/card/PercentageTagCard";
 import styled from "styled-components";
 import MoneyTagCard from "../components/content/card/MoneyTagCard";
+import axios from "axios";
+import PredictTagCard from "../components/content/card/PredictTagCard";
 
 
 
@@ -16,7 +18,16 @@ const TagCardSlider = styled.div`
   justify-content: flex-start;
 `;
 function Vegetable( { vegetable }) {
-    console.log(vegetable)
+    const [data, setData] = useState(null);
+    useEffect(() => {
+        axios.get(`/api/vegetable-cards/name/${vegetable}`)
+            .then(response => setData(response.data))
+            .catch(error => console.log(error));
+    }, [vegetable]);
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
     return(
         <div id="content-wrapper" className="d-flex flex-column">
             <TopBar></TopBar>
@@ -24,9 +35,9 @@ function Vegetable( { vegetable }) {
 
             <marquee behavior="scroll" direction="right" scrollamount="5">
                 <TagCardSlider>
-                    <PercentageTagCard percentage={50}></PercentageTagCard>
-                    <PercentageTagCard percentage={40}></PercentageTagCard>
-                    <MoneyTagCard></MoneyTagCard>
+                    <PercentageTagCard percentage={data['pricePercentage']}></PercentageTagCard>
+                    <MoneyTagCard veggie={data}></MoneyTagCard>
+                    <PredictTagCard flag={data['higherThanToday']}></PredictTagCard>
                 </TagCardSlider>
 
             </marquee>
