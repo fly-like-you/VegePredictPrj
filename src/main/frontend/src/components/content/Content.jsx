@@ -4,6 +4,7 @@ import GraphCard from "./card/GraphCard";
 import ErrorChart from "./chart/ErrorChart";
 import ErrorChartContainer from "./chart/ErrorChart";
 
+import DropDownCard from "./card/DropDownCard";
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -48,6 +49,7 @@ function Content({ vegetable }) {
                 <ErrorChartContainer vegetable={vegetable} otherSiteFlag={0}></ErrorChartContainer>
 
             </CardWrapper>
+            <DropDownCard></DropDownCard>
 
         </ContentWrapper>
     );
