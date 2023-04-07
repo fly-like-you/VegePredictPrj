@@ -17,6 +17,7 @@ function Chart({ veggie }) {
 
     const chartData = {};
     data.forEach(product => {
+
         if (!chartData[product.name]) {
             chartData[product.name] = [{date: product.date, price: product.price}];
         } else {

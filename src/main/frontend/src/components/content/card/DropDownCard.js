@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import DropDown from '../../DropDown';
+import DropDown from "../../DropDown";
+import Chart from "../chart/Chart";
 
 const CardWrapper = styled.div`
   display: flex;
@@ -23,13 +24,11 @@ const OptionDiv = styled.div`
 `;
 
 function DropDownCard({ veggie }) {
-    const [selectedOption, setSelectedOption] = useState('option1');
+    const [selectedOption, setSelectedOption] = useState('Radish');
 
-    const handleSelect = (option) => {
+    function handleDropdownSelect(option) {
         setSelectedOption(option);
-    };
-
-    const options = ['option1', 'option2', 'option3'];
+    }
 
     return (
         <CardWrapper className="card shadow mb-4">
@@ -38,7 +37,10 @@ function DropDownCard({ veggie }) {
                     {veggie} 일간 가격 변화 그래프
                 </h6>
                 <OptionDiv>
-                    <DropDown options={options} onSelect={handleSelect} />
+                    <DropDown
+                        options={['Radish', 'RedPepper', 'Cucumber']}
+                        onSelect={handleDropdownSelect}
+                    />
 
                     <i
                         className="fas fa-info-circle ml-2"
@@ -49,7 +51,7 @@ function DropDownCard({ veggie }) {
                 </OptionDiv>
             </CardHeader>
             <div className="card-body">
-                <p>Selected option: {selectedOption}</p>
+                <Chart key={selectedOption} veggie={selectedOption} />
             </div>
         </CardWrapper>
     );
