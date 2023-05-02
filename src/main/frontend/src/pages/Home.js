@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import TopBar from "../components/topbar/TopBar";
 import Footer from "../components/content/footer/Footer";
-import Banner from "../components/content/Banner";
+import Banner from "../components/content/banner/Banner";
 import Card from "../components/content/card/Card";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
+import Dashboard from "../components/content/banner/Dashboard";
 
 const ContentWrapper = styled.div`
     display: flex;
@@ -27,9 +28,10 @@ const CardWrapper = styled.div`
     flex-wrap: wrap;
     width: 1080px;
     position: absolute;
-    top: 300px;
+    top: 150px;
 
 `;
+
 
 
 function Home() {
@@ -39,17 +41,21 @@ function Home() {
         fetch('/api/vegetable-cards')
             .then((response) => response.json())
             .then((data) => setVegetableCards(data));
-    }, []);
-    console.log(vegetableCards)
+        }, []);
+    if (!vegetableCards) {
+        return <div>Loading...</div>;
+    }
+
+
 
     return(
         <div>
             <TopBar></TopBar>
-
             <ContentWrapper>
                 <Banner imageSrc="/images/banner.jpg" title="농산물 가격예측"/>
 
                 <CardWrapper>
+                    <Dashboard />
                     {vegetableCards.map((card) => (
                         <Link to={`/${card.vegetableName}`}>
 

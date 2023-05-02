@@ -62,7 +62,6 @@ function getChartOptions() {
 
 function ChartComponent(props) {
     const chartRef = useRef(null);
-
     useEffect(() => {
         // data 객체를 가공해서 새로운 객체를 만듭니다.
         const chartData = {};

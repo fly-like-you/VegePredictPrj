@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import FadeInText from "./FadeInText";
+import FadeInText from "../FadeInText";
 
 const BannerImage = styled.img`
   width: 100%;

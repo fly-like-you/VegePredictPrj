@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react'
 import Footer from "../components/content/footer/Footer";
 import Content from "../components/content/Content";
 import TopBar from "../components/topbar/TopBar";
-import Banner from "../components/content/Banner";
+import Banner from "../components/content/banner/Banner";
 import PercentageTagCard from "../components/content/card/PercentageTagCard";
 import styled from "styled-components";
 import MoneyTagCard from "../components/content/card/MoneyTagCard";
 import axios from "axios";
 import PredictTagCard from "../components/content/card/PredictTagCard";
+import GraphCard from "../components/content/card/GraphCard";
 
 
 
