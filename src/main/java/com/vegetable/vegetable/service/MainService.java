@@ -10,20 +10,23 @@ public class MainService {
     private final ErrorRateService errorRateService;
 
     private final OtherSiteErrorRateService otherSiteErrorRateService;
-
+    private final ProductIndexService productIndexService;
 
     @Autowired
-    public MainService(ProductService productService, PredictProductService predictProductService, ErrorRateService errorRateService, OtherSiteErrorRateService otherSiteErrorRateService) {
+    public MainService(ProductService productService, PredictProductService predictProductService, ErrorRateService errorRateService, OtherSiteErrorRateService otherSiteErrorRateService, ProductIndexService productIndexService) {
         this.productService = productService;
         this.predictProductService = predictProductService;
         this.errorRateService = errorRateService;
         this.otherSiteErrorRateService = otherSiteErrorRateService;
+        this.productIndexService = productIndexService;
     }
+
 
     public void init() {
         productService.addSampleData();
         predictProductService.addSampleData();
         errorRateService.createSampleErrorRates();
         otherSiteErrorRateService.createSampleErrorRates();
+        productIndexService.createAllIndex();
     }
 }

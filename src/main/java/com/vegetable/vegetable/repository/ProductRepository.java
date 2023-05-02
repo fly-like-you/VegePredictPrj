@@ -15,6 +15,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByName(String name);
 
+    List<Product> findByDate(LocalDate date);
+
     @Query("SELECT DISTINCT p.name FROM Product p")
     List<String> findAllDistinctNames();
+
+    @Query("SELECT DISTINCT p.date FROM Product p")
+    List<LocalDate> findAllDates();
 }

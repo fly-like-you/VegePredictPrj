@@ -20,9 +20,9 @@ public class ErrorRateController {
     private final OtherSiteErrorRateService otherSiteErrorRateService;
     @Autowired
     public ErrorRateController(ErrorRateService errorRateService, OtherSiteErrorRateService otherSiteErrorRateService) {
-        this.errorRateService = errorRateService;
-        this.otherSiteErrorRateService = otherSiteErrorRateService;
-    }
+                this.errorRateService = errorRateService;
+                this.otherSiteErrorRateService = otherSiteErrorRateService;
+            }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<ErrorRate>> getErrorRateByName(@PathVariable String name) {
