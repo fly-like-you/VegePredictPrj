@@ -12,4 +12,5 @@ public interface PredictProductRepository extends JpaRepository<PredictProduct, 
     PredictProduct findByProductName(String productName);
     Optional<PredictProduct> findByProductNameAndProductDate(String name, LocalDate date);
 
+
 }

@@ -3,6 +3,8 @@ package com.vegetable.vegetable.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class MainService {
     private final ProductService productService;
@@ -22,9 +24,12 @@ public class MainService {
     }
 
 
+    @PostConstruct
     public void init() {
 //        productService.startService();
-        predictProductService.addSampleData();
+
+        //productService.saveProductFromJson(".\\insertData\\product.json");
+
 
         errorRateService.createSampleErrorRates();
         otherSiteErrorRateService.createSampleErrorRates();

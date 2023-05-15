@@ -12,11 +12,13 @@ const StyledDashboard = styled.div`
 `;
 
 const Dashboard = () => {
+    
     const [graphData, setGraphData] = useState(null);
 
     useEffect(() => {
         axios
             .get('/api/vegetable-index')
+
             .then((response) => {
                 setGraphData(response.data);
             })

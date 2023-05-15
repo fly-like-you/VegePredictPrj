@@ -1,21 +1,28 @@
 package com.vegetable.vegetable.service;
 
 import com.vegetable.vegetable.entity.ErrorRate;
+import com.vegetable.vegetable.entity.PredictProduct;
+import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.ErrorRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ErrorRateService {
     private final ErrorRateRepository errorRateRepository;
+
+    private final ProductService productService;
+    private final PredictProductService predictProductService;
     @Autowired
-    public ErrorRateService(ErrorRateRepository errorRateRepository) {
+    public ErrorRateService(ErrorRateRepository errorRateRepository, ProductService productService, PredictProductService predictProductService) {
         this.errorRateRepository = errorRateRepository;
+        this.productService = productService;
+        this.predictProductService = predictProductService;
     }
+
+
 
     public List<ErrorRate> getErrorRatesByName(String name) {
         return errorRateRepository.findByName(name);
@@ -76,5 +83,41 @@ public class ErrorRateService {
                 errorRateRepository.save(errorRate);
             }
         }
+    }
+
+    public void saveErrorRate(LocalDate date, String productName) {
+        List<Double> errorRates = calcErrorRate(date, productName);
+
+    }
+    public List<Double> calcErrorRate(LocalDate date, String productName) {
+
+        // 1. date로부터 7일간의 농산물의 가격이 담긴 product을 불러온다.
+        List<Product> products = productService.getProductsForSevenDays(date, productName);
+
+        // 2. date로부터 predictProduct를 불러온다. (predictProduct에는 7일간의 예측가격이 담겨져있다.)
+        Optional<PredictProduct> predictProductOptional = predictProductService.getPredictProduct(date, productName);
+        PredictProduct predictProduct = predictProductOptional.orElseThrow(NoSuchElementException::new);
+
+
+        // 3. 7일간의 오차율을 구한다.
+        List<Double> errorRates = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            int actualPrice = products.get(i).getPrice();
+            int predictedPrice = 0;
+            switch(i) {
+                case 0: predictedPrice = predictProduct.getDay1Price(); break;
+                case 1: predictedPrice = predictProduct.getDay2Price(); break;
+                case 2: predictedPrice = predictProduct.getDay3Price(); break;
+                case 3: predictedPrice = predictProduct.getDay4Price(); break;
+                case 4: predictedPrice = predictProduct.getDay5Price(); break;
+                case 5: predictedPrice = predictProduct.getDay6Price(); break;
+                case 6: predictedPrice = predictProduct.getDay7Price(); break;
+            }
+            double errorRate = Math.abs((predictedPrice - actualPrice) / (double) actualPrice);
+            errorRates.add(errorRate);
+        }
+        return errorRates;
+
+
     }
 }

@@ -32,6 +32,7 @@ public class PredictProduct {
     @Column(name = "day4_price")
     private Integer day4Price;
 
+
     @Column(name = "day5_price")
     private Integer day5Price;
 
@@ -41,5 +42,20 @@ public class PredictProduct {
     @Column(name = "day7_price")
     private Integer day7Price;
 
-    // getters and setters
+
+    public PredictProduct(Product product, Integer day1Price, Integer day2Price, Integer day3Price, Integer day4Price, Integer day5Price, Integer day6Price, Integer day7Price) {
+        this.product = product;
+        this.day1Price = day1Price;
+        this.day2Price = day2Price;
+        this.day3Price = day3Price;
+        this.day4Price = day4Price;
+        this.day5Price = day5Price;
+        this.day6Price = day6Price;
+        this.day7Price = day7Price;
+    }
+
+    public PredictProduct(){
+
+    }
+// getters and setters
 }

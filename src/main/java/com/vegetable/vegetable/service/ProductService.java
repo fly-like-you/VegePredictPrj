@@ -1,14 +1,19 @@
 package com.vegetable.vegetable.service;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -32,41 +37,6 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void addSampleData() {
-        List<Product> products = new ArrayList<>();
-
-        // 채소 종류
-        String[] vegetableNames = {"깻잎(1kg)", "꽈리고추(1kg)", "시금치(1kg)", "딸기(1kg)", "애호박(20개)",
-                "양파(1kg)",
-                "쥬키니(1kg)",
-                "청양고추(1kg)",
-                "파프리카(1kg)",
-                "풋고추(1kg)",
-        };
-        // 3월 1일부터 3월 31일까지의 날짜 생성
-        LocalDate startDate = LocalDate.of(2023, 3, 15);
-        LocalDate endDate = LocalDate.now().minusDays(1);
-
-        List<LocalDate> dates = new ArrayList<>();
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            dates.add(date);
-        }
-
-        // 가격 랜덤 생성
-        Random random = new Random();
-
-        // 샘플 데이터 생성
-        for (String vegetableName : vegetableNames) {
-            for (LocalDate date : dates) {
-                int price = random.nextInt(10001) + 10000; // 10000원에서 20000원 사이의 가격 랜덤 생성
-                products.add(new Product(vegetableName, price, date));
-            }
-        }
-        // 샘플 데이터 저장
-        productRepository.saveAll(products);
-        productRepository.flush();
-
-    }
     public void startService(){
         try {
             // 필요한 모듈 설치
@@ -84,10 +54,69 @@ public class ProductService {
         }
     }
 
-    public void persistProduct(){
-        List<Product> products = this.getAllProducts();
-        productRepository.saveAll(products);
+    // JSON 파일을 읽어들이기
+    public String readJsonFile(String filePath) throws IOException {
+        File file = ResourceUtils.getFile(filePath);
+        Path path = Paths.get(file.getAbsolutePath());
+        return Files.readString(path);
+    }
+
+    public void saveProductFromJson(String filePath) {
+        System.out.println("saveProductFromJson 시작");
+
+        try {
+            String jsonData = readJsonFile(filePath);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(jsonData);
+
+            Iterator<String> fieldNames = rootNode.fieldNames();
+            while (fieldNames.hasNext()) {
+                String productName = fieldNames.next();
+                JsonNode priceArrayNode = rootNode.get(productName);
+                List<Product> productList = new ArrayList<>();
+
+                for (JsonNode priceNode : priceArrayNode) {
+                    String name = priceNode.get("kindname").asText();
+                    String date = priceNode.get("date").asText();
+                    int price = priceNode.get("price").asInt();
+
+                    Product product = new Product();
+                    product.setName(productName);
+                    product.setName(name);
+                    product.setDate(LocalDate.parse(date));
+                    product.setPrice(price);
+
+                    productList.add(product);
+                }
+
+                productRepository.saveAll(productList);
+                productRepository.flush();
+            }
+
+            System.out.println("Product가 성공적으로 저장되었습니다.");
+
+        } catch (IOException e) {
+            System.out.println("파일을 읽어오는 도중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        System.out.println("saveProductFromJson 종료");
 
     }
+    public List<Product> getProductsForSevenDays(LocalDate startDate, String vegetableName) {
+        List<Product> productsForSevenDays = new ArrayList<>(Collections.nCopies(7, null));
+        for (int i = 0; i < 7; i++) {
+            LocalDate currentDate = startDate.plusDays(i);
+            Optional<Product> product = productRepository.findByNameAndDate(vegetableName, currentDate);
+            int finalI = i;
+            product.ifPresent(value -> productsForSevenDays.set(finalI, value));
+        }
+        return productsForSevenDays;
+    }
+
+    public List<String> getProductsNames(){
+        return productRepository.findAllDistinctNames();
+    }
+
 
 }

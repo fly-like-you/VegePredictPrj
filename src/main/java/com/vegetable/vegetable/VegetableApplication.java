@@ -12,8 +12,6 @@ public class VegetableApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(VegetableApplication.class, args);
-		MainService mainService = context.getBean(MainService.class);
-		mainService.init();
 	}
 
 }

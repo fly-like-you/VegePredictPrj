@@ -6,7 +6,9 @@ import com.vegetable.vegetable.repository.PredictProductRepository;
 import com.vegetable.vegetable.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,8 @@ public class PredictProductService {
 
     private final PredictProductRepository predictProductRepository;
     private final ProductRepository productRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     public PredictProductService(PredictProductRepository predictProductRepository, ProductRepository productRepository) {
@@ -25,7 +29,10 @@ public class PredictProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public void addSampleData() {
+        System.out.println("predictProductService 시작");
+
         List<PredictProduct> predictProducts = new ArrayList<>();
 
         // 채소 종류
@@ -46,9 +53,14 @@ public class PredictProductService {
         // 샘플 데이터 생성
         for (String vegetableName : vegetableNames) {
             PredictProduct predictProduct = new PredictProduct();
-            Optional<Product> product = productRepository.findByNameAndDate(vegetableName, startDate);
-            predictProduct.setProduct(product.orElse(new Product(vegetableName,0,startDate)));
+            Optional<Product> productOptional = productRepository.findByNameAndDate(vegetableName, startDate);
+            Product product = productOptional.orElseGet(() -> {
+                Product newProduct = new Product(vegetableName, 0, startDate);
+                entityManager.persist(newProduct); // 영속성 컨텍스트에 저장
+                return newProduct;
+            });
 
+            predictProduct.setProduct(product);
             for (int i = 1; i <= 7; i++) {
                 int price = random.nextInt(10001) + 10000; // 10000원에서 20000원 사이의 가격 랜덤 생성
                 switch (i) {
@@ -82,7 +94,9 @@ public class PredictProductService {
 
         // 샘플 데이터 저장
         predictProductRepository.saveAll(predictProducts);
-        predictProductRepository.flush();
     }
 
+    public Optional<PredictProduct> getPredictProduct(LocalDate date, String vegetableName) {
+        return predictProductRepository.findByProductNameAndProductDate(vegetableName, date);
+    }
 }
