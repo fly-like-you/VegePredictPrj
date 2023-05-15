@@ -23,8 +23,9 @@ public class MainService {
 
 
     public void init() {
-        productService.addSampleData();
+//        productService.startService();
         predictProductService.addSampleData();
+
         errorRateService.createSampleErrorRates();
         otherSiteErrorRateService.createSampleErrorRates();
         productIndexService.createAllIndex();

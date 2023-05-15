@@ -26,9 +26,9 @@ function Vegetable( { vegetable }) {
             .catch(error => console.log(error));
     }, [vegetable]);
 
-    if (!data) {
-        return <div>Loading...</div>;
-    }
+    // if (!data) {
+    //     return <div>Loading...</div>;
+    // }
     return(
         <div id="content-wrapper" className="d-flex flex-column">
             <TopBar></TopBar>
@@ -36,9 +36,11 @@ function Vegetable( { vegetable }) {
 
             <marquee behavior="scroll" direction="right" scrollamount="5">
                 <TagCardSlider>
-                    <PercentageTagCard percentage={data['pricePercentage']}></PercentageTagCard>
-                    <MoneyTagCard veggie={data}></MoneyTagCard>
-                    <PredictTagCard flag={data['higherThanToday']}></PredictTagCard>
+                    { data && data['pricePercentage'] && data['higherThanToday'] &&
+                        <PercentageTagCard percentage={data['pricePercentage']}></PercentageTagCard> &&
+                        <MoneyTagCard veggie={data}></MoneyTagCard> &&
+                        <PredictTagCard flag={data['higherThanToday']}></PredictTagCard>
+                    }
                 </TagCardSlider>
 
             </marquee>

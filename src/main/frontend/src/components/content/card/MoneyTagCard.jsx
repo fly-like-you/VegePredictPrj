@@ -1,6 +1,7 @@
 import React from "react";
 
 function PercentageTagCard({veggie}) {
+
     console.log(veggie);
 
     return (

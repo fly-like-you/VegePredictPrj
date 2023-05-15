@@ -29,7 +29,13 @@ public class PredictProductService {
         List<PredictProduct> predictProducts = new ArrayList<>();
 
         // 채소 종류
-        String[] vegetableNames = {"RedPepper", "Radish", "Cucumber"};
+        String[] vegetableNames = {"깻잎(1kg)", "꽈리고추(1kg)", "시금치(1kg)", "딸기(1kg)", "애호박(20개)",
+                "양파(1kg)",
+                "쥬키니(1kg)",
+                "청양고추(1kg)",
+                "파프리카(1kg)",
+                "풋고추(1kg)",
+        };
 
         // 2023년 4월 1일부터 2023년 4월 7일까지의 날짜 생성
         LocalDate startDate = LocalDate.now();

@@ -36,8 +36,13 @@ public class ProductService {
         List<Product> products = new ArrayList<>();
 
         // 채소 종류
-        String[] vegetableNames = {"RedPepper", "Radish", "Cucumber"};
-
+        String[] vegetableNames = {"깻잎(1kg)", "꽈리고추(1kg)", "시금치(1kg)", "딸기(1kg)", "애호박(20개)",
+                "양파(1kg)",
+                "쥬키니(1kg)",
+                "청양고추(1kg)",
+                "파프리카(1kg)",
+                "풋고추(1kg)",
+        };
         // 3월 1일부터 3월 31일까지의 날짜 생성
         LocalDate startDate = LocalDate.of(2023, 3, 15);
         LocalDate endDate = LocalDate.now().minusDays(1);
@@ -60,6 +65,28 @@ public class ProductService {
         // 샘플 데이터 저장
         productRepository.saveAll(products);
         productRepository.flush();
+
+    }
+    public void startService(){
+        try {
+            // 필요한 모듈 설치
+            ProcessBuilder pbInstall = new ProcessBuilder("pip", "install", "pymysql");
+            pbInstall.inheritIO();
+            Process processInstall = pbInstall.start();
+            processInstall.waitFor();
+
+            ProcessBuilder pb = new ProcessBuilder("python", "./insertData/run.py");
+            pb.inheritIO();
+            Process process = pb.start();
+            process.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void persistProduct(){
+        List<Product> products = this.getAllProducts();
+        productRepository.saveAll(products);
 
     }
 

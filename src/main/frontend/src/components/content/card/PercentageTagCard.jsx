@@ -1,7 +1,10 @@
 import React from "react";
 
 function PercentageTagCard({percentage}) {
+
+
     let round = Math.round(percentage * 10) / 10;
+
     return (
         <div className="col-xl-3 mb-4" style={{width: '50%'}}  >
             <div className="card border-left-info shadow h-100 py-2">

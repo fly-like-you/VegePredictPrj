@@ -34,12 +34,16 @@ const CardWrapper = styled.div`
 function Content({ vegetable }) {
     return (
         <ContentWrapper>
+
             <SectionWrapper>
                 <h2>가격 예측 그래프</h2>
             </SectionWrapper>
             <CardWrapper>
+                <DropDownCard></DropDownCard>
+
                 <GraphCard veggie={vegetable}  />
             </CardWrapper>
+
             <SectionWrapper>
                 <h2>세부사항</h2>
             </SectionWrapper>
@@ -49,7 +53,6 @@ function Content({ vegetable }) {
                 <ErrorChartContainer vegetable={vegetable} otherSiteFlag={0}></ErrorChartContainer>
 
             </CardWrapper>
-            <DropDownCard></DropDownCard>
 
         </ContentWrapper>
     );

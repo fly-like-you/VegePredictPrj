@@ -13,7 +13,7 @@ public class PredictProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumns({
             @JoinColumn(name = "name", referencedColumnName = "name"),
             @JoinColumn(name = "date", referencedColumnName = "date")

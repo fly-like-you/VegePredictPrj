@@ -1,6 +1,7 @@
 import React from "react";
 
 function PercentageTagCard({flag}) {
+
     var str = "";
     flag ? str = "내일 가격이 올라요!" : str = "내일 가격이 떨어져요!";
     var subStr = "";

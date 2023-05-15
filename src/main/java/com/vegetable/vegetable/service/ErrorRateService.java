@@ -29,7 +29,12 @@ public class ErrorRateService {
     // 기타 필요한 메소드들
     public void createSampleErrorRates() {
         LocalDate startDate = LocalDate.of(2023, 3, 21);
-        List<String> productNames = Arrays.asList("Radish", "RedPepper", "Cucumber");
+        List<String> productNames = Arrays.asList("깻잎(1kg)", "꽈리고추(1kg)", "시금치(1kg)", "딸기(1kg)", "애호박(20개)",
+                "양파(1kg)",
+                "쥬키니(1kg)",
+                "청양고추(1kg)",
+                "파프리카(1kg)",
+                "풋고추(1kg)");
         Random random = new Random();
 
         for (String productName : productNames) {
