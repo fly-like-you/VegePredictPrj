@@ -43,5 +43,14 @@ public class ErrorRate {
     @Column(name = "day7_error")
     private Double day7Error;
 
+    public ErrorRate(LocalDate date, String name){
+        this.date = date;
+        this.name = name;
+    }
+
+    public ErrorRate(){
+
+    }
+
     // 기타 필요한 메소드들
 }

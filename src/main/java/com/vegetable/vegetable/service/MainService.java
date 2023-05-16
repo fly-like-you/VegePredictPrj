@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class MainService {
@@ -26,12 +27,11 @@ public class MainService {
 
     @PostConstruct
     public void init() {
-//        productService.startService();
 
-        //productService.saveProductFromJson(".\\insertData\\product.json");
+//      productService.startService();
+//      productService.saveProductFromJson(".\\insertData\\product.json");
+        List<String> productsNames = productService.getProductsNames();
 
-
-        errorRateService.createSampleErrorRates();
         otherSiteErrorRateService.createSampleErrorRates();
         productIndexService.createAllIndex();
     }

@@ -88,8 +88,21 @@ public class ErrorRateService {
     public void saveErrorRate(LocalDate date, String productName) {
         List<Double> errorRates = calcErrorRate(date, productName);
 
+        ErrorRate errorRate = new ErrorRate(date, productName);
+
+        errorRate.setDay1Error(errorRates.get(0));
+        errorRate.setDay2Error(errorRates.get(1));
+        errorRate.setDay3Error(errorRates.get(2));
+        errorRate.setDay4Error(errorRates.get(3));
+        errorRate.setDay5Error(errorRates.get(4));
+        errorRate.setDay6Error(errorRates.get(5));
+        errorRate.setDay7Error(errorRates.get(6));
+
+        errorRateRepository.save(errorRate);
     }
-    public List<Double> calcErrorRate(LocalDate date, String productName) {
+
+    // 에러율을 측정 (한 날자를 기준으로 7일간의 예측된 데이터와 실제 데이터의 오차율을 구함)
+    private List<Double> calcErrorRate(LocalDate date, String productName) {
 
         // 1. date로부터 7일간의 농산물의 가격이 담긴 product을 불러온다.
         List<Product> products = productService.getProductsForSevenDays(date, productName);
