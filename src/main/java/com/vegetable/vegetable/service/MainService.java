@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.time.LocalDate;
 
 @Service
 public class MainService {
@@ -27,12 +27,13 @@ public class MainService {
 
     @PostConstruct
     public void init() {
-
-//      productService.startService();
-//      productService.saveProductFromJson(".\\insertData\\product.json");
-        List<String> productsNames = productService.getProductsNames();
-
-        otherSiteErrorRateService.createSampleErrorRates();
-        productIndexService.createAllIndex();
+        // TODO 데이터를 가져오는데 데이터가 없으면 파이썬을 실행시켜서 데이터를 가져와야함!
+        LocalDate date = LocalDate.now();
+        productService.startService("2023-05-17", "2023-05-26");
+        errorRateService.saveErrorRate(LocalDate.now().minusDays(2), "시금치(1kg)");
+//        List<String> productsNames = productService.getProductsNames();
+//
+//        otherSiteErrorRateService.createSampleErrorRates();
+        productIndexService.saveProductIndex(date);
     }
 }

@@ -26,11 +26,11 @@ public class ProductIndexService {
         List<LocalDate> allDates = productRepository.findAllDates();
 
         for (LocalDate date : allDates) {
-            create(date);
+            saveProductIndex(date);
         }
     }
 
-    public void create(LocalDate date) {
+    public void saveProductIndex(LocalDate date) {
         // 해당 날짜로 등록된 농산물들의 가격을 가져옵니다.
         List<Product> products = productRepository.findByDate(date);
 

@@ -37,31 +37,34 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void startService(){
+    public void startService(String startDate, String endDate){
         try {
-            // 필요한 모듈 설치
-            ProcessBuilder pbInstall = new ProcessBuilder("pip", "install", "pymysql");
-            pbInstall.inheritIO();
-            Process processInstall = pbInstall.start();
-            processInstall.waitFor();
-
+            // 파이썬 스크립트 실행
             ProcessBuilder pb = new ProcessBuilder("python", "./insertData/run.py");
             pb.inheritIO();
+
+            // 환경 변수 설정
+            Map<String, String> env = pb.environment();
+            env.put("START_DATE", startDate);
+            env.put("END_DATE", endDate);
+
             Process process = pb.start();
             process.waitFor();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        saveProductFromJson("./insertData/product_"+ startDate +".json");
     }
 
     // JSON 파일을 읽어들이기
-    public String readJsonFile(String filePath) throws IOException {
+    private String readJsonFile(String filePath) throws IOException {
         File file = ResourceUtils.getFile(filePath);
         Path path = Paths.get(file.getAbsolutePath());
         return Files.readString(path);
     }
 
-    public void saveProductFromJson(String filePath) {
+    private void saveProductFromJson(String filePath) {
         System.out.println("saveProductFromJson 시작");
 
         try {
@@ -117,6 +120,4 @@ public class ProductService {
     public List<String> getProductsNames(){
         return productRepository.findAllDistinctNames();
     }
-
-
 }

@@ -87,7 +87,7 @@ public class ErrorRateService {
 
     public void saveErrorRate(LocalDate date, String productName) {
         List<Double> errorRates = calcErrorRate(date, productName);
-
+        System.out.println("errorRates:" + errorRates);
         ErrorRate errorRate = new ErrorRate(date, productName);
 
         errorRate.setDay1Error(errorRates.get(0));
@@ -109,14 +109,16 @@ public class ErrorRateService {
 
         // 2. date로부터 predictProduct를 불러온다. (predictProduct에는 7일간의 예측가격이 담겨져있다.)
         Optional<PredictProduct> predictProductOptional = predictProductService.getPredictProduct(date, productName);
-        PredictProduct predictProduct = predictProductOptional.orElseThrow(NoSuchElementException::new);
-
+        PredictProduct predictProduct = predictProductOptional.orElseThrow(NoSuchElementException::new);        // TODO 만약 7일간의 데이터가 없다면? 파이썬으로 실행시켜야함
+        System.out.println("predictProduct = " + predictProduct);
 
         // 3. 7일간의 오차율을 구한다.
         List<Double> errorRates = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            int actualPrice = products.get(i).getPrice();
-            int predictedPrice = 0;
+            int actualPrice = (products.get(i) != null && products.get(i).getPrice() != 0) ? products.get(i).getPrice() : 1;
+
+
+            int predictedPrice = 1;
             switch(i) {
                 case 0: predictedPrice = predictProduct.getDay1Price(); break;
                 case 1: predictedPrice = predictProduct.getDay2Price(); break;
@@ -127,6 +129,9 @@ public class ErrorRateService {
                 case 6: predictedPrice = predictProduct.getDay7Price(); break;
             }
             double errorRate = Math.abs((predictedPrice - actualPrice) / (double) actualPrice);
+            if (errorRate > 100) {
+                errorRate = 100;
+            }
             errorRates.add(errorRate);
         }
         return errorRates;
