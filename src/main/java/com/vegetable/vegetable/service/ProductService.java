@@ -119,11 +119,16 @@ public class ProductService {
     public List<Product> getProductsForSevenDays(LocalDate startDate, String vegetableName) {
         List<Product> productsForSevenDays = new ArrayList<>(Collections.nCopies(7, null));
         for (int i = 0; i < 7; i++) {
-            LocalDate currentDate = startDate.plusDays(i);
-            Optional<Product> product = productRepository.findByNameAndDate(vegetableName, currentDate);
+            startDate = startDate.plusDays(1);
+            System.out.println("startDate" + startDate);
+            System.out.println("vegetableName"  + vegetableName);
+
+            Optional<Product> product = productRepository.findByNameAndDate(vegetableName, startDate);
             int finalI = i;
             product.ifPresent(value -> productsForSevenDays.set(finalI, value));
         }
+        System.out.println("ProductService.getProductsForSevenDays");
+        System.out.println(productsForSevenDays);
         return productsForSevenDays;
     }
 

@@ -1,16 +1,22 @@
 package com.vegetable.vegetable.service;
 
-import com.vegetable.vegetable.entity.ErrorRate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vegetable.vegetable.entity.OtherSiteErrorRate;
-import com.vegetable.vegetable.repository.ErrorRateRepository;
+import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.OtherSiteErrorRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 
 @Service
 public class OtherSiteErrorRateService {
@@ -25,60 +31,58 @@ public class OtherSiteErrorRateService {
         return otherSiteErrorRateRepository.findByName(name);
     }
 
-    public List<OtherSiteErrorRate> getAllErrorRates() {
-        return otherSiteErrorRateRepository.findAll();
+    @Async
+    @Scheduled(cron = "0 30 14 * * ?")  // Every day at 14:30
+    public void runPythonOtherSiteCrawling() throws IOException {
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = date.format(formatter);
+
+        String pythonPath = "C:/Users/Parkjunho/anaconda3/envs/MachineLearning/python.exe";
+        String jsonFilePath = "./predict_python/data/other_site_error_rates/othSite_prediction_from_" + formattedDate + ".json";
+        try {
+            // 파이썬 스크립트 실행
+            ProcessBuilder pb = new ProcessBuilder(pythonPath, "./predict_python/error_rate_crawling/crawlingSite.py");
+            pb.inheritIO();
+            pb.start();
+
+        } catch (IOException e) {
+            System.out.println("Error during script execution: " + e.getMessage());
+            e.printStackTrace();
+        }
+        saveDataFromJson(jsonFilePath);
     }
 
-    // 기타 필요한 메소드들
-    public void createSampleErrorRates() {
-        LocalDate startDate = LocalDate.of(2023, 3, 21);
-        List<String> productNames = Arrays.asList("깻잎(1kg)", "꽈리고추(1kg)", "시금치(1kg)", "딸기(1kg)", "애호박(20개)",
-                "양파(1kg)",
-                "쥬키니(1kg)",
-                "청양고추(1kg)",
-                "파프리카(1kg)",
-                "풋고추(1kg)");
-        Random random = new Random();
+    public void saveDataFromJson(String jsonFilePath) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
 
-        for (String productName : productNames) {
-            for (int i = 0; i < 7; i++) {
-                LocalDate date = startDate.plusDays(i);
+        List<Map<String, Object>> dataList = mapper.readValue(new File(jsonFilePath), List.class);
+        ArrayList<OtherSiteErrorRate> rates = new ArrayList<>();
+        for (Map<String, Object> data : dataList) {
+            OtherSiteErrorRate rate = new OtherSiteErrorRate();
 
-                OtherSiteErrorRate errorRate = new OtherSiteErrorRate();
-                errorRate.setDate(date);
-                errorRate.setName(productName);
+            rate.setDate(LocalDate.parse((String)data.get("date")));
+            rate.setName((String)data.get("name"));
 
-                for (int j = 1; j <= 7; j++) {
-                    double error = random.nextDouble() * 10;
+            rate.setDay1Error((Double)data.get("day1error"));
+            rate.setDay2Error((Double)data.get("day2error"));
+            rate.setDay3Error((Double)data.get("day3error"));
+            rate.setDay4Error((Double)data.get("day4error"));
+            rate.setDay5Error((Double)data.get("day5error"));
+            rate.setDay6Error((Double)data.get("day6error"));
+            rate.setDay7Error((Double) data.get("day7error"));
 
-                    switch (j) {
-                        case 1:
-                            errorRate.setDay1Error(error);
-                            break;
-                        case 2:
-                            errorRate.setDay2Error(error);
-                            break;
-                        case 3:
-                            errorRate.setDay3Error(error);
-                            break;
-                        case 4:
-                            errorRate.setDay4Error(error);
-                            break;
-                        case 5:
-                            errorRate.setDay5Error(error);
-                            break;
-                        case 6:
-                            errorRate.setDay6Error(error);
-                            break;
-                        case 7:
-                            errorRate.setDay7Error(error);
-                            break;
-                    }
-                }
-
-                otherSiteErrorRateRepository.save(errorRate);
+            if (isExistRate(rate)) {
+                continue;
             }
+
+            rates.add(rate);
         }
+        otherSiteErrorRateRepository.saveAll(rates);
+    }
+    private boolean isExistRate(OtherSiteErrorRate rate) {
+        Optional<Product> productInDb = otherSiteErrorRateRepository.findByNameAndDate(rate.getName(), rate.getDate());
+        return productInDb.isPresent();
     }
 
 }

@@ -5,6 +5,7 @@ import com.vegetable.vegetable.entity.PredictProduct;
 import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.ErrorRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
@@ -29,12 +30,20 @@ public class ErrorRateService {
     public List<ErrorRate> getAllErrorRates() {
         return errorRateRepository.findAll();
     }
-
-
+    private static final List<String> VEGETABLES = List.of(
+            "토마토(일반)", "양파(일반)", "파프리카(일반)",
+            "시금치(일반)", "깻잎(일반)", "청양",
+            "풋고추(전체)", "미나리(일반)"
+    );
+    @Scheduled(cron = "0 30 16 * * ?")  // Every day at 16:30
+    public void saveErrorRateScheduled() {
+        for (String name : VEGETABLES) {
+            saveErrorRate(LocalDate.now().minusDays(7), name);
+        }
+    }
     public void saveErrorRate(LocalDate date, String productName) {
-        List<Double> errorRates = calcErrorRate(date, productName);
-        System.out.println("errorRates:" + errorRates);
         ErrorRate errorRate = new ErrorRate(date, productName);
+        List<Double> errorRates = calcErrorRate(date, productName);
 
         errorRate.setDay1Error(errorRates.get(0));
         errorRate.setDay2Error(errorRates.get(1));
@@ -44,9 +53,15 @@ public class ErrorRateService {
         errorRate.setDay6Error(errorRates.get(5));
         errorRate.setDay7Error(errorRates.get(6));
 
+        if (isExistRate(errorRate)) return;
+
         errorRateRepository.save(errorRate);
     }
 
+    private boolean isExistRate(ErrorRate rate) {
+        Optional<ErrorRate> errorRateInDb = errorRateRepository.findByNameAndDate(rate.getName(), rate.getDate());
+        return errorRateInDb.isPresent();
+    }
     // 3시에 머신러닝이 완료된 파일이 올라온다. 이때 이를 실행하는 함수가 있어야함
     // 사용자가 요청을 한다고
     // 에러율을 측정 (한 날자를 기준으로 7일간의 예측된 데이터와 실제 데이터의 오차율을 구함)
@@ -57,6 +72,7 @@ public class ErrorRateService {
         List<Product> products = productService.getProductsForSevenDays(date, productName);
 
         // 2. date로부터 predictProduct를 불러온다. (predictProduct에는 7일간의 예측가격이 담겨져있다.)
+        // 21일이면 데이터에는 22일의 예측가격 ~ 28일의 예측가격이 담김
         Optional<PredictProduct> predictProductOptional = predictProductService.getPredictProduct(date, productName);
 
         // 비어있으면 빈 객체 생성
@@ -71,7 +87,6 @@ public class ErrorRateService {
         for (int i = 0; i < 7; i++) {
             int actualPrice = (products.get(i) != null && products.get(i).getPrice() != 0) ? products.get(i).getPrice() : 1;
 
-
             int predictedPrice = 1;
             switch(i) {
                 case 0: predictedPrice = predictProduct.getDay1Price(); break;
@@ -83,6 +98,7 @@ public class ErrorRateService {
                 case 6: predictedPrice = predictProduct.getDay7Price(); break;
             }
             double errorRate = Math.abs((predictedPrice - actualPrice) / (double) actualPrice);
+
             if (errorRate > 100) {
                 errorRate = 100;
             }

@@ -34,8 +34,13 @@ public class VegetableCardService {
 
         Optional<PredictProduct> predictProduct = predictProductRepository.findByProductNameAndProductDate(vegetableName, today);
         Optional<Product> product = productRepository.findByNameAndDate(vegetableName, today);
-        int todayPrice = product.orElse(new Product()).getPrice();
-        int predictPrice = predictProduct.orElse(new PredictProduct()).getDay1Price();
+
+        Product emptyProduct = new Product(vegetableName, 0, 0, today);
+        PredictProduct emptyPredict = new PredictProduct(emptyProduct, 0,0,0,0,0,0,0);
+
+        int todayPrice = product.orElse(emptyProduct).getPrice();
+        int predictPrice = predictProduct.orElse(emptyPredict).getDay1Price();
+
         boolean isHigherThanToday = predictPrice >= todayPrice;
 
         return new VegetableCard(vegetableName, pricePercentage, isHigherThanToday, todayPrice);

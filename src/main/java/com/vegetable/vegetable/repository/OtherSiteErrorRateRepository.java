@@ -2,12 +2,17 @@ package com.vegetable.vegetable.repository;
 
 import com.vegetable.vegetable.entity.ErrorRate;
 import com.vegetable.vegetable.entity.OtherSiteErrorRate;
+import com.vegetable.vegetable.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OtherSiteErrorRateRepository  extends JpaRepository<OtherSiteErrorRate, Long> {
     List<OtherSiteErrorRate> findByName(String name);
+
+    Optional<Product> findByNameAndDate(String name, LocalDate date);
 }
