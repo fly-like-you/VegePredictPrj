@@ -1,19 +1,20 @@
 package com.vegetable.vegetable.service;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vegetable.vegetable.entity.Product;
 import com.vegetable.vegetable.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class ProductService {
@@ -23,10 +24,16 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-
+    private final ExecutorService service = Executors.newSingleThreadExecutor();
     public List<Product> getProductsByName(String name) {
         return productRepository.findByName(name);
     }
+
+    private static final List<String> VEGETABLES = List.of(
+            "토마토(일반)", "양파(일반)", "파프리카(일반)",
+            "시금치(일반)", "깻잎(일반)", "청양",
+            "풋고추(전체)", "미나리(일반)"
+    );
 
     public Product getProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
@@ -37,74 +44,77 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void startService(String startDate, String endDate){
+
+    @Async
+    @Scheduled(cron = "0 30 10 * * ?") // Every day at 10:30
+    public void startService(){
+        // service.submit(() ->{
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = date.format(formatter);
+
+        String filePath = "./predict_python/data/price_and_trade/price_trade_" + formattedDate +".json";
+        String pythonPath = "C:/Users/Parkjunho/anaconda3/envs/MachineLearning/python.exe";
         try {
+            System.out.println("파이썬 스크립트 실행");
             // 파이썬 스크립트 실행
-            ProcessBuilder pb = new ProcessBuilder("python", "./insertData/run.py");
+            ProcessBuilder pb = new ProcessBuilder(pythonPath, "./predict_python/nongnet_crawling/run.py");
             pb.inheritIO();
+            pb.start();
 
-            // 환경 변수 설정
-            Map<String, String> env = pb.environment();
-            env.put("START_DATE", startDate);
-            env.put("END_DATE", endDate);
-
-            Process process = pb.start();
-            process.waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        saveProductFromJson("./insertData/product_"+ startDate +".json");
-    }
-
-    // JSON 파일을 읽어들이기
-    private String readJsonFile(String filePath) throws IOException {
-        File file = ResourceUtils.getFile(filePath);
-        Path path = Paths.get(file.getAbsolutePath());
-        return Files.readString(path);
-    }
-
-    private void saveProductFromJson(String filePath) {
-        System.out.println("saveProductFromJson 시작");
-
-        try {
-            String jsonData = readJsonFile(filePath);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(jsonData);
-
-            Iterator<String> fieldNames = rootNode.fieldNames();
-            while (fieldNames.hasNext()) {
-                String productName = fieldNames.next();
-                JsonNode priceArrayNode = rootNode.get(productName);
-                List<Product> productList = new ArrayList<>();
-
-                for (JsonNode priceNode : priceArrayNode) {
-                    String name = priceNode.get("kindname").asText();
-                    String date = priceNode.get("date").asText();
-                    int price = priceNode.get("price").asInt();
-
-                    Product product = new Product();
-                    product.setName(productName);
-                    product.setName(name);
-                    product.setDate(LocalDate.parse(date));
-                    product.setPrice(price);
-
-                    productList.add(product);
-                }
-
-                productRepository.saveAll(productList);
-                productRepository.flush();
-            }
-
-            System.out.println("Product가 성공적으로 저장되었습니다.");
+            System.out.println("파이썬 스크립트 종료");
 
         } catch (IOException e) {
-            System.out.println("파일을 읽어오는 도중 오류가 발생했습니다.");
+            System.out.println("Error during script execution: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("saveProductFromJson 종료");
 
+        saveProductFromJson(filePath);
+        // });
+
+    }
+
+
+    public void saveProductFromJson(String filePath) {
+        List<Map<String, Object>> dataList = readJsonData(filePath);
+        List<Product> products = processData(dataList);
+
+        productRepository.saveAll(products);
+    }
+
+    private List<Map<String, Object>> readJsonData(String filePath) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(new File(filePath), new TypeReference<List<Map<String, Object>>>() {});
+        } catch (IOException e) {
+            throw new RuntimeException("파일을 읽어오는 도중 오류가 발생했습니다: " + filePath, e);
+        }
+    }
+
+    private List<Product> processData(List<Map<String, Object>> dataList) {
+        List<Product> products = new ArrayList<>();
+
+        for (Map<String, Object> data : dataList) {
+            LocalDate date = LocalDate.parse((String) data.get("date"));
+
+            for (String vegetable : VEGETABLES) {
+                Map<String, Double> productData = (Map<String, Double>) data.get(vegetable);
+                int price = productData.get("price").intValue();
+                float trade = productData.get("trade").floatValue();
+                Product product = new Product(vegetable, price, trade, date);
+
+                if (isProductExist(product)) {
+                    continue;
+                }
+                products.add(product);
+            }
+        }
+        return products;
+    }
+    private boolean isProductExist(Product product) {
+        Optional<Product> productInDb = productRepository.findByNameAndDate(product.getName(), product.getDate());
+        return productInDb.isPresent();
     }
     public List<Product> getProductsForSevenDays(LocalDate startDate, String vegetableName) {
         List<Product> productsForSevenDays = new ArrayList<>(Collections.nCopies(7, null));

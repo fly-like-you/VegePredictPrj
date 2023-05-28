@@ -22,13 +22,17 @@ public class Product implements Serializable {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "trade")
+    private float trade;
+
     @Column(name = "date")
     private LocalDate date;
 
     // getters and setters
-    public Product(String name, int price, LocalDate date) {
+    public Product(String name, int price, float trade, LocalDate date) {
         this.name = name;
         this.price = price;
+        this.trade = trade;
         this.date = date;
     }
 

@@ -26,9 +26,9 @@ public class VegetableCardService {
         LocalDate yesterday = today.minusDays(1);
 
         Product productToday = productRepository.findByNameAndDate(vegetableName, today)
-                .orElse(new Product(vegetableName, 0, today));
+                .orElse(new Product(vegetableName, 0, 0, today));
         Product productYesterday = productRepository.findByNameAndDate(vegetableName, yesterday)
-                .orElse(new Product(vegetableName, 0, yesterday));
+                .orElse(new Product(vegetableName, 0, 0, yesterday));
 
         double pricePercentage = calculatePricePercentage(productToday.getPrice(), productYesterday.getPrice());
 
