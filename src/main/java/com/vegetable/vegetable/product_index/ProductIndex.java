@@ -1,4 +1,4 @@
-package com.vegetable.vegetable.entity;
+package com.vegetable.vegetable.product_index;
 
 
 

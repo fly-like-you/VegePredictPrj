@@ -1,8 +1,7 @@
-package com.vegetable.vegetable.repository;
+package com.vegetable.vegetable.other_site_error;
 
-import com.vegetable.vegetable.entity.ErrorRate;
-import com.vegetable.vegetable.entity.OtherSiteErrorRate;
-import com.vegetable.vegetable.entity.Product;
+import com.vegetable.vegetable.other_site_error.OtherSiteErrorRate;
+import com.vegetable.vegetable.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

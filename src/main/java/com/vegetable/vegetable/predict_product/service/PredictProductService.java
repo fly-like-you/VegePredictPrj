@@ -1,18 +1,16 @@
-package com.vegetable.vegetable.service;
+package com.vegetable.vegetable.predict_product.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vegetable.vegetable.entity.PredictProduct;
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.repository.PredictProductRepository;
-import com.vegetable.vegetable.repository.ProductRepository;
+import com.vegetable.vegetable.predict_product.PredictProduct;
+import com.vegetable.vegetable.predict_product.PredictProductRepository;
+import com.vegetable.vegetable.product.Product;
+import com.vegetable.vegetable.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;

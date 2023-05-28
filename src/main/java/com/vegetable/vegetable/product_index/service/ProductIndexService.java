@@ -1,10 +1,10 @@
-package com.vegetable.vegetable.service;
+package com.vegetable.vegetable.product_index.service;
 
 
-import com.vegetable.vegetable.entity.ProductIndex;
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.repository.ProductIndexRepository;
-import com.vegetable.vegetable.repository.ProductRepository;
+import com.vegetable.vegetable.product_index.ProductIndex;
+import com.vegetable.vegetable.product.Product;
+import com.vegetable.vegetable.product_index.ProductIndexRepository;
+import com.vegetable.vegetable.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

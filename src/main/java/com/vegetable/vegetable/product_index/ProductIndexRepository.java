@@ -1,6 +1,6 @@
-package com.vegetable.vegetable.repository;
+package com.vegetable.vegetable.product_index;
 
-import com.vegetable.vegetable.entity.ProductIndex;
+import com.vegetable.vegetable.product_index.ProductIndex;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

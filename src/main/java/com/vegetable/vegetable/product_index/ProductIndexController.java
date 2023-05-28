@@ -1,7 +1,6 @@
-package com.vegetable.vegetable.controller;
+package com.vegetable.vegetable.product_index;
 
-import com.vegetable.vegetable.entity.ProductIndex;
-import com.vegetable.vegetable.service.ProductIndexService;
+import com.vegetable.vegetable.product_index.service.ProductIndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

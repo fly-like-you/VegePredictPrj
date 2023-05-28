@@ -1,5 +1,6 @@
-package com.vegetable.vegetable.entity;
+package com.vegetable.vegetable.predict_product;
 
+import com.vegetable.vegetable.product.Product;
 import lombok.Getter;
 import lombok.Setter;
 

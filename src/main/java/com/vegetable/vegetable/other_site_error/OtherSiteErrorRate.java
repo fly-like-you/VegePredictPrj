@@ -1,4 +1,4 @@
-package com.vegetable.vegetable.entity;
+package com.vegetable.vegetable.other_site_error;
 
 import lombok.Getter;
 import lombok.Setter;

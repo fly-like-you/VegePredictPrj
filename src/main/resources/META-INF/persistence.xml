@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
     <!--  EntityManagerFactory 생성 시 사용되는 persistence name -->
     <persistence-unit name="product">
-        <class>com.vegetable.vegetable.entity.Product</class>
+        <class>com.vegetable.vegetable.product.Product</class>
         <properties>
             <!-- 필수 속성 -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

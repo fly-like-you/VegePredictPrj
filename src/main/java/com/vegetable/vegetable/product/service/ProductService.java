@@ -1,8 +1,8 @@
-package com.vegetable.vegetable.service;
+package com.vegetable.vegetable.product.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.repository.ProductRepository;
+import com.vegetable.vegetable.product.Product;
+import com.vegetable.vegetable.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;

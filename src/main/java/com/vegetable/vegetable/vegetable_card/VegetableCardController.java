@@ -1,8 +1,6 @@
-package com.vegetable.vegetable.controller;
+package com.vegetable.vegetable.vegetable_card;
 
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.entity.VegetableCard;
-import com.vegetable.vegetable.service.VegetableCardService;
+import com.vegetable.vegetable.vegetable_card.service.VegetableCardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

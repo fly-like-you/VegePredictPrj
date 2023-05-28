@@ -1,8 +1,7 @@
-package com.vegetable.vegetable.controller;
+package com.vegetable.vegetable.product;
 
 // src/main/java/com.demogroup.demoweb/Controller/ProductController.java
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.service.ProductService;
+import com.vegetable.vegetable.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

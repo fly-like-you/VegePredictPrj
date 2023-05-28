@@ -1,6 +1,5 @@
 package com.vegetable.vegetable;
 
-import com.vegetable.vegetable.service.MainService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

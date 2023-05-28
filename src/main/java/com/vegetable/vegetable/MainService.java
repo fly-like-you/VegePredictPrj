@@ -1,14 +1,14 @@
-package com.vegetable.vegetable.service;
+package com.vegetable.vegetable;
 
+import com.vegetable.vegetable.error_rate.service.ErrorRateService;
+import com.vegetable.vegetable.other_site_error.service.OtherSiteErrorRateService;
+import com.vegetable.vegetable.predict_product.service.PredictProductService;
+import com.vegetable.vegetable.product.service.ProductService;
+import com.vegetable.vegetable.product_index.service.ProductIndexService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service

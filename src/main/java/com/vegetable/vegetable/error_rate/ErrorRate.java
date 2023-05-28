@@ -1,4 +1,4 @@
-package com.vegetable.vegetable.entity;
+package com.vegetable.vegetable.error_rate;
 
 import lombok.Getter;
 import lombok.Setter;

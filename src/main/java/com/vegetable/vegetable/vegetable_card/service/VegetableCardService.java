@@ -1,9 +1,9 @@
-package com.vegetable.vegetable.service;
-import com.vegetable.vegetable.entity.PredictProduct;
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.entity.VegetableCard;
-import com.vegetable.vegetable.repository.PredictProductRepository;
-import com.vegetable.vegetable.repository.ProductRepository;
+package com.vegetable.vegetable.vegetable_card.service;
+import com.vegetable.vegetable.predict_product.PredictProduct;
+import com.vegetable.vegetable.product.Product;
+import com.vegetable.vegetable.vegetable_card.VegetableCard;
+import com.vegetable.vegetable.predict_product.PredictProductRepository;
+import com.vegetable.vegetable.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;

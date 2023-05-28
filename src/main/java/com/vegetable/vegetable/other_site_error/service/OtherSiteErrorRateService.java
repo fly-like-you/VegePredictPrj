@@ -1,9 +1,9 @@
-package com.vegetable.vegetable.service;
+package com.vegetable.vegetable.other_site_error.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vegetable.vegetable.entity.OtherSiteErrorRate;
-import com.vegetable.vegetable.entity.Product;
-import com.vegetable.vegetable.repository.OtherSiteErrorRateRepository;
+import com.vegetable.vegetable.other_site_error.OtherSiteErrorRate;
+import com.vegetable.vegetable.product.Product;
+import com.vegetable.vegetable.other_site_error.OtherSiteErrorRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;

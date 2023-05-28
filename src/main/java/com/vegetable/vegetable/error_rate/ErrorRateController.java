@@ -1,8 +1,7 @@
-package com.vegetable.vegetable.controller;
-import com.vegetable.vegetable.entity.ErrorRate;
-import com.vegetable.vegetable.entity.OtherSiteErrorRate;
-import com.vegetable.vegetable.service.ErrorRateService;
-import com.vegetable.vegetable.service.OtherSiteErrorRateService;
+package com.vegetable.vegetable.error_rate;
+import com.vegetable.vegetable.error_rate.service.ErrorRateService;
+import com.vegetable.vegetable.other_site_error.OtherSiteErrorRate;
+import com.vegetable.vegetable.other_site_error.service.OtherSiteErrorRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

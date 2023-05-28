@@ -1,4 +1,4 @@
-package com.vegetable.vegetable.entity;
+package com.vegetable.vegetable.vegetable_card;
 
 import lombok.Getter;
 import lombok.Setter;
