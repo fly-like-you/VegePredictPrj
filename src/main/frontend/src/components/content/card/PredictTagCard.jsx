@@ -1,6 +1,6 @@
 import React from "react";
 
-function PercentageTagCard({flag}) {
+function PredictTagCard({flag}) {
 
     var str = "";
     flag ? str = "내일 가격이 올라요!" : str = "내일 가격이 떨어져요!";
@@ -29,4 +29,4 @@ function PercentageTagCard({flag}) {
     );
 }
 
-export default PercentageTagCard;
+export default PredictTagCard;

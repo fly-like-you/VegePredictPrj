@@ -1,8 +1,13 @@
 package com.vegetable.vegetable.product.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vegetable.vegetable.PythonScriptExecutor;
+import com.vegetable.vegetable.other_site_error.service.OtherSiteErrorRateService;
+import com.vegetable.vegetable.predict_product.service.PredictProductService;
 import com.vegetable.vegetable.product.Product;
 import com.vegetable.vegetable.product.ProductRepository;
+import com.vegetable.vegetable.product_index.ProductIndex;
+import com.vegetable.vegetable.product_index.service.ProductIndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,21 +17,33 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductIndexService productIndexService;
+
+    private final PythonScriptExecutor pythonScriptExecutor;
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductIndexService productIndexService, PythonScriptExecutor pythonScriptExecutor) {
         this.productRepository = productRepository;
+        this.pythonScriptExecutor = pythonScriptExecutor;
+        this.productIndexService = productIndexService;
     }
 
-    private final ExecutorService service = Executors.newSingleThreadExecutor();
     public List<Product> getProductsByName(String name) {
         return productRepository.findByName(name);
+    }
+
+    public List<Product> getProductsByNameLastMonth(String name) {
+        LocalDate oneMonthAgo = LocalDate.now().minus(1, ChronoUnit.MONTHS);
+        return productRepository.findAllFromLastMonth(name, oneMonthAgo);
     }
 
     private static final List<String> VEGETABLES = List.of(
@@ -43,37 +60,31 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+    @Scheduled(cron = "0 35 08 * * ?") // Every day at 11:10
+    public void startService(){ // ProductService
+        System.out.println("ProductService.startService");
+        String pythonScriptPath = "./predict_python/nongnet_crawling/run.py";
+        Optional<Integer> exitCode = pythonScriptExecutor.executePythonScript(pythonScriptPath);
 
 
-    @Async
-    @Scheduled(cron = "0 30 10 * * ?") // Every day at 10:30
-    public void startService(){
-        // service.submit(() ->{
+        if (exitCode.isPresent() && exitCode.get() == 0) {
+            System.out.println("ProductService: 파이썬 정상종료 생성된 JSON을 저장합니다.");
+            String filePath = createTodayPath();
+            saveProductFromJson(filePath);
+            productIndexService.saveProductIndex(LocalDate.now());  // 인덱스 지표 업데이트
+        } else {
+            System.out.println("ProductService: failed retry 1hour after");
+            pythonScriptExecutor.scheduleRetry();
+        }
+    }
+
+    private static String createTodayPath() {
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = date.format(formatter);
-
         String filePath = "./predict_python/data/price_and_trade/price_trade_" + formattedDate +".json";
-        String pythonPath = "C:/Users/Parkjunho/anaconda3/envs/MachineLearning/python.exe";
-        try {
-            System.out.println("파이썬 스크립트 실행");
-            // 파이썬 스크립트 실행
-            ProcessBuilder pb = new ProcessBuilder(pythonPath, "./predict_python/nongnet_crawling/run.py");
-            pb.inheritIO();
-            pb.start();
-
-            System.out.println("파이썬 스크립트 종료");
-
-        } catch (IOException e) {
-            System.out.println("Error during script execution: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        saveProductFromJson(filePath);
-        // });
-
+        return filePath;
     }
-
 
     public void saveProductFromJson(String filePath) {
         List<Map<String, Object>> dataList = readJsonData(filePath);
@@ -96,17 +107,25 @@ public class ProductService {
         List<Product> products = new ArrayList<>();
 
         for (Map<String, Object> data : dataList) {
-            LocalDate date = LocalDate.parse((String) data.get("date"));
+            String dateString = (String) data.get("date");
+            LocalDate date = LocalDate.parse(dateString);
 
             for (String vegetable : VEGETABLES) {
                 Map<String, Double> productData = (Map<String, Double>) data.get(vegetable);
                 int price = productData.get("price").intValue();
                 float trade = productData.get("trade").floatValue();
+                if (price == 0) {
+                    Optional<Product> p = productRepository.findByNameAndDate(vegetable, date.minusDays(1));
+                    if (p.isPresent()) {
+                        price = p.get().getPrice();
+                    }else{
+                        price = 1;
+                    }
+
+                }
                 Product product = new Product(vegetable, price, trade, date);
 
-                if (isProductExist(product)) {
-                    continue;
-                }
+                if (isProductExist(product)) continue;
                 products.add(product);
             }
         }

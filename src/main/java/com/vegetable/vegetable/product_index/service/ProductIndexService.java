@@ -9,16 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
 public class ProductIndexService {
-    private final ProductIndexRepository producytIndexRepository;
+    private final ProductIndexRepository productIndexRepository;
     private final ProductRepository productRepository;
 
     @Autowired
     public ProductIndexService(ProductIndexRepository producytIndexRepository, ProductRepository productRepository) {
-        this.producytIndexRepository = producytIndexRepository;
+        this.productIndexRepository = producytIndexRepository;
         this.productRepository = productRepository;
     }
     public void createAllIndex() {
@@ -49,10 +50,11 @@ public class ProductIndexService {
         ProductIndex productIndex = new ProductIndex(date, averagePrice);
 
         // 생성된 Index를 저장
-        producytIndexRepository.save(productIndex);
+        productIndexRepository.save(productIndex);
     }
 
-    public List<ProductIndex> getAllIndexes() {
-        return producytIndexRepository.findAll();
+    public List<ProductIndex> getAllLastMonthIndexes() {
+        LocalDate oneMonthAgo = LocalDate.now().minus(1, ChronoUnit.MONTHS);
+        return productIndexRepository.findAllFromLastMonth(oneMonthAgo);
     }
 }

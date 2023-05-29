@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components';
 import GraphCard from "./card/GraphCard";
 import ErrorChart from "./chart/ErrorChart";
 import ErrorChartContainer from "./chart/ErrorChart";
 
 import DropDownCard from "./card/DropDownCard";
+import axios from "axios";
 const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -32,16 +33,23 @@ const CardWrapper = styled.div`
 
 
 function Content({ vegetable }) {
+    const [data, setData] = useState(null);
+    useEffect(() => {
+        axios.get(`/api/products/name`)
+            .then(response => setData(response.data))
+            .catch(error => console.log(error));
+    }, []);
+
     return (
         <ContentWrapper>
 
             <SectionWrapper>
-                <h2>가격 예측 그래프</h2>
+                <h2>농산물 가격 그래프</h2>
             </SectionWrapper>
             <CardWrapper>
-                <DropDownCard></DropDownCard>
+                <DropDownCard vegetable_names={data}></DropDownCard>
 
-                <GraphCard veggie={vegetable}  />
+                <GraphCard veggie={vegetable}/>
             </CardWrapper>
 
             <SectionWrapper>

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "PredictProduct")
@@ -14,12 +15,11 @@ public class PredictProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumns({
-            @JoinColumn(name = "name", referencedColumnName = "name"),
-            @JoinColumn(name = "date", referencedColumnName = "date")
-    })
-    private Product product;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "date")
+    private LocalDate date;
 
     @Column(name = "day1_price")
     private Integer day1Price;
@@ -43,9 +43,9 @@ public class PredictProduct {
     @Column(name = "day7_price")
     private Integer day7Price;
 
-
-    public PredictProduct(Product product, Integer day1Price, Integer day2Price, Integer day3Price, Integer day4Price, Integer day5Price, Integer day6Price, Integer day7Price) {
-        this.product = product;
+    public PredictProduct(String name, LocalDate date, Integer day1Price, Integer day2Price, Integer day3Price, Integer day4Price, Integer day5Price, Integer day6Price, Integer day7Price) {
+        this.name = name;
+        this.date = date;
         this.day1Price = day1Price;
         this.day2Price = day2Price;
         this.day3Price = day3Price;

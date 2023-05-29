@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import DropDown from "../../DropDown";
 import Chart from "../chart/Chart";
+import axios from "axios";
 
 const CardWrapper = styled.div`
   display: flex;
@@ -23,22 +24,23 @@ const OptionDiv = styled.div`
   align-items: center;
 `;
 
-function DropDownCard({ veggie }) {
-    const [selectedOption, setSelectedOption] = useState('Radish');
+function DropDownCard({vegetable_names}) {
+    const [selectedOption, setSelectedOption] = useState(null);
 
     function handleDropdownSelect(option) {
         setSelectedOption(option);
     }
 
+    console.log("DropDownCard", vegetable_names);
     return (
         <CardWrapper className="card shadow mb-4">
             <CardHeader className="card-header py-3">
                 <h6 className="m-0 font-weight-bold text-primary">
-                    {veggie} 일간 가격 변화 그래프
+                    농산물 가격 변화 그래프
                 </h6>
                 <OptionDiv>
                     <DropDown
-                        options={['Radish', 'RedPepper', 'Cucumber']}
+                        options={vegetable_names}
                         onSelect={handleDropdownSelect}
                     />
 

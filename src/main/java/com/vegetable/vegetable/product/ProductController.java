@@ -32,7 +32,7 @@ public class ProductController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<Product>> getProductByName(@PathVariable String name) {
-        List<Product> products = productService.getProductsByName(name);
+        List<Product> products = productService.getProductsByNameLastMonth(name);
         if (products.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -43,5 +43,11 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<String>> getDistinctProductNames() {
+        List<String> productsNames = productService.getProductsNames();
+        return new ResponseEntity<>(productsNames, HttpStatus.OK);
     }
 }

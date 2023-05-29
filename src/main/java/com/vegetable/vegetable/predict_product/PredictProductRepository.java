@@ -8,8 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface PredictProductRepository extends JpaRepository<PredictProduct, Long> {
-    PredictProduct findByProductName(String productName);
-    Optional<PredictProduct> findByProductNameAndProductDate(String name, LocalDate date);
+    PredictProduct findByName(String name);
+    Optional<PredictProduct> findByNameAndDate(String name, LocalDate date);
 
 
 }

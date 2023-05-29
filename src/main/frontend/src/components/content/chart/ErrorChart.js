@@ -24,20 +24,22 @@ const rainbowColors = [
 
 const ErrorChart = ({ data }) => {
     const chartData = {
-        labels: ['Day 1 Error', 'Day 2 Error', 'Day 3 Error', 'Day 4 Error', 'Day 5 Error', 'Day 6 Error', 'Day 7 Error'],
+        labels: ['1일후', '2일후', '3일후', '4일후', '5일후', '6일후', '7일후'],
         datasets: data.map((item, index) => {
             const color = rainbowColors[index % rainbowColors.length];
+            const dataPoints = [
+                item.day1Error === 100 ? null : item.day1Error,
+                item.day2Error === 100 ? null : item.day2Error,
+                item.day3Error === 100 ? null : item.day3Error,
+                item.day4Error === 100 ? null : item.day4Error,
+                item.day5Error === 100 ? null : item.day5Error,
+                item.day6Error === 100 ? null : item.day6Error,
+                item.day7Error === 100 ? null : item.day7Error,
+            ];
+
             return {
                 label: item.date,
-                data: [
-                    item.day1Error,
-                    item.day2Error,
-                    item.day3Error,
-                    item.day4Error,
-                    item.day5Error,
-                    item.day6Error,
-                    item.day7Error,
-                ],
+                data: dataPoints,
                 fill: false,
                 borderColor: `rgba(${color.r}, ${color.g}, ${color.b}, 1)`,
                 backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.2)`,
@@ -51,7 +53,7 @@ const ErrorChart = ({ data }) => {
             x: {
                 title: {
                     display: true,
-                    text: 'Error by Day',
+                    text: 'n일 후 오차율',
                 },
             },
             y: {
@@ -65,9 +67,7 @@ const ErrorChart = ({ data }) => {
     };
 
     return (
-        <div>
-            <Line data={chartData} options={options} />
-        </div>
+        <Line data={chartData} options={options} />
     );
 };
 

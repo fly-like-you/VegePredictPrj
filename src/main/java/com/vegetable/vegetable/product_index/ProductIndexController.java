@@ -22,7 +22,7 @@ public class ProductIndexController {
 
     @GetMapping
     public ResponseEntity<List<ProductIndex>> getIndex() {
-        List<ProductIndex> allProductIndices = productIndexService.getAllIndexes();
+        List<ProductIndex> allProductIndices = productIndexService.getAllLastMonthIndexes();
         return ResponseEntity.ok(allProductIndices);
     }
 

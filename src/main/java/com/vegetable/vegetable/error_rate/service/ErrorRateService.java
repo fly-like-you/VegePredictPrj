@@ -45,7 +45,8 @@ public class ErrorRateService {
         return errorRateRepository.findAll();
     }
 
-    @Scheduled(cron = "0 30 16 * * ?")  // Every day at 16:30
+
+    @Scheduled(cron = "0 30 12 * * ?") // Every day at 16:40
     public void saveErrorRateScheduled() {
         for (String name : VEGETABLES) {
             saveErrorRate(LocalDate.now().minusDays(7), name);

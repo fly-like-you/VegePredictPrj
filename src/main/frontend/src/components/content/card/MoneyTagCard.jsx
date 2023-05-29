@@ -1,9 +1,6 @@
 import React from "react";
 
-function PercentageTagCard({veggie}) {
-
-    console.log(veggie);
-
+function MoneyTagCard({veggie}) {
     return (
         <div className="col-xl-3 col-md-6 mb-4">
             <div className="card border-left-success shadow h-100 py-2">
@@ -26,4 +23,4 @@ function PercentageTagCard({veggie}) {
     );
 }
 
-export default PercentageTagCard;
+export default MoneyTagCard;

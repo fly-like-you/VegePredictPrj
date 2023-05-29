@@ -22,13 +22,13 @@ function Vegetable( { vegetable }) {
     const [data, setData] = useState(null);
     useEffect(() => {
         axios.get(`/api/vegetable-cards/name/${vegetable}`)
-            .then(response => setData(response.data))
+            .then(response => setData(response.data)
+            )
             .catch(error => console.log(error));
-    }, [vegetable]);
-
-    // if (!data) {
-    //     return <div>Loading...</div>;
-    // }
+    }, []);
+    if (data) {
+        console.log(data['pricePercentage'], data['higherThanToday']);
+    }
     return(
         <div id="content-wrapper" className="d-flex flex-column">
             <TopBar></TopBar>
@@ -36,13 +36,13 @@ function Vegetable( { vegetable }) {
 
             <marquee behavior="scroll" direction="right" scrollamount="5">
                 <TagCardSlider>
-                    { data && data['pricePercentage'] && data['higherThanToday'] &&
-                        <PercentageTagCard percentage={data['pricePercentage']}></PercentageTagCard> &&
-                        <MoneyTagCard veggie={data}></MoneyTagCard> &&
-                        <PredictTagCard flag={data['higherThanToday']}></PredictTagCard>
-                    }
-                </TagCardSlider>
 
+                    { data && data['pricePercentage'] && <PercentageTagCard percentage={data['pricePercentage']}></PercentageTagCard> }
+                    { data && data['higherThanToday'] && <PredictTagCard flag={data['higherThanToday']}></PredictTagCard> }
+                    { data && <MoneyTagCard veggie={data}></MoneyTagCard> }
+
+
+                </TagCardSlider>
             </marquee>
             <Content vegetable={vegetable}></Content>
             <Footer></Footer>

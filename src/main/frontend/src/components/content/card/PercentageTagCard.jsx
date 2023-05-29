@@ -1,8 +1,7 @@
 import React from "react";
 
 function PercentageTagCard({percentage}) {
-
-
+    console.log("Percentage");
     let round = Math.round(percentage * 10) / 10;
 
     return (

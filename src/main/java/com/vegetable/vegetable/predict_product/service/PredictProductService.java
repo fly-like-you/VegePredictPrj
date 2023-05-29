@@ -2,6 +2,8 @@ package com.vegetable.vegetable.predict_product.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vegetable.vegetable.PythonScriptExecutor;
+import com.vegetable.vegetable.error_rate.service.ErrorRateService;
 import com.vegetable.vegetable.predict_product.PredictProduct;
 import com.vegetable.vegetable.predict_product.PredictProductRepository;
 import com.vegetable.vegetable.product.Product;
@@ -21,39 +23,42 @@ import java.util.*;
 public class PredictProductService {
 
     private final PredictProductRepository predictProductRepository;
-    private final ProductRepository productRepository;
+    private final PythonScriptExecutor pythonScriptExecutor;
 
     @Autowired
-    public PredictProductService(PredictProductRepository predictProductRepository, ProductRepository productRepository) {
+    public PredictProductService(PredictProductRepository predictProductRepository, PythonScriptExecutor pythonScriptExecutor) {
         this.predictProductRepository = predictProductRepository;
-        this.productRepository = productRepository;
+        this.pythonScriptExecutor = pythonScriptExecutor;
+
     }
 
     public Optional<PredictProduct> getPredictProduct(LocalDate date, String vegetableName) {
-        return predictProductRepository.findByProductNameAndProductDate(vegetableName, date);
+        return predictProductRepository.findByNameAndDate(vegetableName, date);
     }
 
-    @Async
-    @Scheduled(cron = "0 30 11 * * ?") // Every day at 11:30
+    @Scheduled(cron = "0 37 08 * * ?") // Every day at 11:40
     public void runPythonDeepLearning() {
-        String pythonPath = "C:/Users/Parkjunho/anaconda3/envs/MachineLearning/python.exe";
-        try {
-            // 파이썬 스크립트 실행
-            ProcessBuilder pb = new ProcessBuilder(pythonPath, "./predict_python/price_predict/MachineLearnng.py");
-            pb.inheritIO();
-            pb.start();
+        System.out.println("PredictProductService: 머신러닝 실행");
+        String jsonFilePath = createTodayPath();
+        String pythonScriptPath =  "./predict_python/price_predict/MachineLearning.py";
 
-        } catch (IOException e) {
-            System.out.println("Error during script execution: " + e.getMessage());
-            e.printStackTrace();
+        Optional<Integer> exitCode = pythonScriptExecutor.executePythonScript(pythonScriptPath);
+
+        if (exitCode.isPresent() && exitCode.get() == 0) {
+            System.out.println("PredictProductService: 파이썬 정상종료 생성된 JSON을 저장합니다.");
+            savePredictionFromJson(jsonFilePath);
+        } else {
+            System.out.println("PredictProductService: failed retry 1hour after");
+            pythonScriptExecutor.scheduleRetry();
         }
+    }
 
+    private static String createTodayPath() {
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = date.format(formatter);
-
-        String filePath = "./predict_python/data/predict/predict_from_" + formattedDate +".json";
-        savePredictionFromJson(filePath);
+        String jsonFilePath = "./predict_python/data/predict/predict_from_" + formattedDate +".json";
+        return jsonFilePath;
     }
 
     public void savePredictionFromJson(String filePath) {
@@ -64,7 +69,7 @@ public class PredictProductService {
             // JSON 파일을 읽어들입니다.
             File jsonFile = new File(filePath);
 
-            // JSON 파일의 데이터를 Map<String, List<Integer>>에 매핑합니다.
+            // JSON 파일의 데이터를 Map
             Map<String, List<Integer>> map = mapper.readValue(jsonFile, new TypeReference<Map<String, List<Integer>>>(){});
 
             // Map의 각 entry에 대해 PredictProduct 객체를 만들고, 데이터를 저장합니다.
@@ -74,8 +79,8 @@ public class PredictProductService {
 
                 // product 정보를 설정합니다.
                 PredictProduct predictProduct = new PredictProduct();
-                Product product = productRepository.findByNameAndDate(productName, LocalDate.now()).get();
-                predictProduct.setProduct(product);
+                predictProduct.setName(productName);
+                predictProduct.setDate(LocalDate.now());
 
                 predictProduct.setDay1Price(prices.get(0));
                 predictProduct.setDay2Price(prices.get(1));

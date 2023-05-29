@@ -5,7 +5,8 @@ const ButtonDiv = styled.div`
   width: 200px;
 `;
 function DropDown({ options, onSelect }) {
-    const [selectedOption, setSelectedOption] = useState(options[0]);
+    console.log("DropDown", options);
+    const [selectedOption, setSelectedOption] = useState(null);
     const handleClick = (event, option) => {
         event.preventDefault();
         setSelectedOption(option);
@@ -27,7 +28,7 @@ function DropDown({ options, onSelect }) {
                 {selectedOption}
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {options.map((option, index) => (
+                {options?.map((option, index) => (
                     <a
                         key={index}
                         className="dropdown-item"

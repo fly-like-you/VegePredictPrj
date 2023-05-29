@@ -6,21 +6,37 @@ const StyledCanvas = styled.canvas`
   width: 100%;
   height: 100%;
 `;
-
 function getChartColor(vegetable) {
-    switch (vegetable) {
-        case 'carrot':
-            return 'orange';
-        case 'Radish':
-            return 'green';
-        case 'Cucumber':
-            return 'green';
-        case 'RedPepper':
-            return 'red';
-        default:
-            return 'black';
+    const colors = [
+        'rgb(255, 99, 132)', // 깻잎(일반)
+        'rgb(54, 162, 235)', // 미나리(일반)
+        'rgb(255, 205, 86)', // 시금치(일반)
+        'rgb(75, 192, 192)', // 양파(일반)
+        'rgb(255, 159, 64)', // 청양
+        'rgb(153, 102, 255)', // 토마토(일반)
+        'rgb(255, 99, 64)', // 파프리카(일반)
+        'rgb(54, 162, 99)' // 풋고추(전체)
+    ];
+
+    const index = [
+        '깻잎(일반)',
+        '미나리(일반)',
+        '시금치(일반)',
+        '양파(일반)',
+        '청양',
+        '토마토(일반)',
+        '파프리카(일반)',
+        '풋고추(전체)'
+    ].indexOf(vegetable);
+
+    if (index !== -1) {
+        return colors[index];
+    } else {
+        // 농산물에 해당하는 색상이 없을 경우, 기본 색상을 반환하거나 예외 처리를 진행할 수 있습니다.
+        return 'rgb(0, 0, 0)'; // 예시로 검은색 반환
     }
 }
+
 
 
 function getChartOptions() {
